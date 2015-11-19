@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>NattyDB by Jias</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">NattyDB</h1>
+      <h2 class="project-tagline">A natty little data fetching tool for react project that no longer needs to use jQuery/Zepto.</h2>
+      <a href="https://github.com/Jias/natty-db" class="btn">View on GitHub</a>
+      <a href="https://github.com/Jias/natty-db/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/Jias/natty-db/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="natty-db" class="anchor" href="#natty-db" aria-hidden="true"><span class="octicon octicon-link"></span></a>natty-db</h1>
+
+<p>An awesome natty little data fetching tool for mobile project that no longer needs to use zepto.</p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<h4>
+<a id="第一步定义数据接口" class="anchor" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%8F%A3" aria-hidden="true"><span class="octicon octicon-link"></span></a>第一步：定义数据接口</h4>
+
+<p>创建项目或模块的<code>db</code>文件。如<code>db.js</code></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// 引入`natty-db`模块</span>
+<span class="pl-k">const</span> <span class="pl-c1">NattyDB</span> <span class="pl-k">=</span> request(<span class="pl-s"><span class="pl-pds">'</span>natty-db<span class="pl-pds">'</span></span>);
+
+<span class="pl-c">// 创建一个`DB上下文(DB-Context)`，用于多个`DB`共享默认配置。</span>
+<span class="pl-k">let</span> <span class="pl-c1">DBC</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">NattyDB.Context</span>({
+     urlPrefix<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>your-url-prefix<span class="pl-pds">'</span></span>,
+     mock<span class="pl-k">:</span> <span class="pl-c1">false</span>,
+     data<span class="pl-k">:</span> {
+         token<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>your-token<span class="pl-pds">'</span></span>
+     },
+     timeout<span class="pl-k">:</span> <span class="pl-c1">5000</span>,
+     <span class="pl-c">// 数据格式预处理</span>
+     <span class="pl-en">fix</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">resp</span>) {
+         <span class="pl-k">return</span> {
+             success<span class="pl-k">:</span> <span class="pl-k">!</span>resp.hasError,
+             content<span class="pl-k">:</span> resp.<span class="pl-c1">content</span>,
+             error<span class="pl-k">:</span> resp.error
+         }
+     } 
+});
+
+<span class="pl-c">// 在一个DB上下文中创建一个`DB`，同时指定该`DB`所具有的方法。</span>
+<span class="pl-c1">DBC</span>.create(<span class="pl-s"><span class="pl-pds">'</span>User<span class="pl-pds">'</span></span>, {
+    getPhone<span class="pl-k">:</span> {
+        url<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>xxx<span class="pl-pds">'</span></span>,
+        method<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>GET<span class="pl-pds">'</span></span>, <span class="pl-c">// GET|POST</span>
+        data<span class="pl-k">:</span> {}, <span class="pl-c">// 静态参数</span>
+        header<span class="pl-k">:</span> {}, <span class="pl-c">// 非jsonp时才生效</span>
+        timeout<span class="pl-k">:</span> <span class="pl-c1">5000</span>, <span class="pl-c">// 如果超时了，会触发error</span>
+        jsonp<span class="pl-k">:</span> <span class="pl-c1">false</span>, <span class="pl-c">// true</span>
+        jsonp<span class="pl-k">:</span> [<span class="pl-c1">true</span>, <span class="pl-s"><span class="pl-pds">'</span>cb<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>j{id}<span class="pl-pds">'</span></span>], <span class="pl-c">// 自定义的jsonp        fit: fn,</span>
+        process<span class="pl-k">:</span> fn, 
+        once<span class="pl-k">:</span> <span class="pl-c1">false</span>,
+        retry<span class="pl-k">:</span> <span class="pl-c1">0</span>,
+        ignoreSelfConcurrent<span class="pl-k">:</span> <span class="pl-c1">true</span>
+    },
+    ...
+});
+
+<span class="pl-c">// 创建更多`DB`</span>
+<span class="pl-c1">DBC</span>.create(<span class="pl-s"><span class="pl-pds">'</span>Order<span class="pl-pds">'</span></span>, {...});
+
+<span class="pl-c">// 返回DB上下文，供业务逻辑调用</span>
+<span class="pl-c1">module</span>.exports <span class="pl-k">=</span> <span class="pl-c1">DBC</span>;</pre></div>
+
+<h4>
+<a id="第二步使用数据接口" class="anchor" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%E4%BD%BF%E7%94%A8%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%8F%A3" aria-hidden="true"><span class="octicon octicon-link"></span></a>第二步：使用数据接口</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// 引入`db`文件</span>
+<span class="pl-k">const</span> <span class="pl-c1">DB</span> <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>path/to/db<span class="pl-pds">'</span></span>);
+
+<span class="pl-c1">DB</span>.User.getPhone({
+    <span class="pl-c">// 动态参数</span>
+}).then(<span class="pl-k">function</span> (<span class="pl-smi">data</span>) {
+    <span class="pl-c">// 成功回调，`data`是`process`处理后的数据</span>
+}, <span class="pl-k">function</span> (<span class="pl-smi">error</span>) {
+    <span class="pl-c">// 失败回调</span>
+    <span class="pl-k">if</span> (error.<span class="pl-c1">status</span> <span class="pl-k">==</span> <span class="pl-c1">404</span>) {} <span class="pl-c">// ajax方法才有error.status</span>
+    <span class="pl-k">if</span> (error.<span class="pl-c1">status</span> <span class="pl-k">==</span> <span class="pl-c1">500</span>) {} <span class="pl-c">// ajax方法才有error.status</span>
+    <span class="pl-k">if</span> (error.<span class="pl-c1">status</span> <span class="pl-k">==</span> <span class="pl-c1">0</span>)      <span class="pl-c">// ajax方法才有error.status 0表示不确定的错误 可能是跨域时使用了非法Header</span>
+    <span class="pl-k">if</span> (error.timeout) {
+        <span class="pl-en">console</span>.<span class="pl-c1">log</span>(error.message)
+    }
+
+    <span class="pl-c">// 服务器端返回的约定错误，以具体项目而定</span>
+    <span class="pl-k">if</span> (error.<span class="pl-c1">code</span> <span class="pl-k">==</span> <span class="pl-c1">10001</span>) {}
+});
+</pre></div>
+
+<h2>
+<a id="dev" class="anchor" href="#dev" aria-hidden="true"><span class="octicon octicon-link"></span></a>dev</h2>
+
+<div class="highlight highlight-source-shell"><pre>$ npm start</pre></div>
+
+<p>and</p>
+
+<div class="highlight highlight-source-shell"><pre>$ node server/server.js</pre></div>
+
+<h2>
+<a id="important-refs" class="anchor" href="#important-refs" aria-hidden="true"><span class="octicon octicon-link"></span></a>Important Refs</h2>
+
+<ul>
+<li>
+<a href="http://www.html5rocks.com/en/tutorials/cors/">Using CORS</a> on html5rocks, very good!</li>
+<li><a href="http://enable-cors.org/client.html">Browser support for CORS</a></li>
+<li><a href="https://msdn.microsoft.com/en-us/library/cc288060(VS.85).aspx">XDomainRequest on MSDN</a></li>
+</ul>
+
+<h2>
+<a id="credits" class="anchor" href="#credits" aria-hidden="true"><span class="octicon octicon-link"></span></a>Credits</h2>
+
+<p>(The MIT License)</p>
+
+<p>Copyright (c) 2015 jias <a href="mailto:gnosaij@yeah.net">gnosaij@yeah.net</a></p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+
+<h3>
+<a id="3rd-party" class="anchor" href="#3rd-party" aria-hidden="true"><span class="octicon octicon-link"></span></a>3rd-party</h3>
+
+<p>NattyDB heavily depends on <a href="https://github.com/tildeio/rsvp.js">RSVP</a> from <a href="http://www.tilde.io/">tilde.io</a> - <a href="https://github.com/tildeio/rsvp.js/blob/master/LICENSE">LICENSE</a>.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/Jias/natty-db">NattyDB</a> is maintained by <a href="https://github.com/Jias">Jias</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
