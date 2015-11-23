@@ -12,7 +12,7 @@
   <body>
     <section class="page-header">
       <h1 class="project-name">NattyDB.js</h1>
-      <h2 class="project-tagline">A natty little data fetching tool for react project that no longer needs to use jQuery/Zepto.</h2>
+      <h2 class="project-tagline">A natty little data fetching tool for react project that no longer needs to use jQuery/Zepto&#39;s Ajax.</h2>
       <a href="https://github.com/Jias/natty-db" class="btn">View on GitHub</a>
       <a href="https://github.com/Jias/natty-db/zipball/master" class="btn">Download .zip</a>
       <a href="https://github.com/Jias/natty-db/tarball/master" class="btn">Download .tar.gz</a>
@@ -25,7 +25,7 @@
 <p>A natty little data fetching tool for react project that no longer needs to use jQuery/Zepto's Ajax. </p>
 
 <h2>
-<a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h2>
+<a id="加载" class="anchor" href="#%E5%8A%A0%E8%BD%BD" aria-hidden="true"><span class="octicon octicon-link"></span></a>加载</h2>
 
 <p>先将NattyDB和<a href="https://github.com/tildeio/rsvp.js">RSVP</a>安装到项目本地</p>
 
@@ -35,8 +35,8 @@
 
 <div class="highlight highlight-source-shell"><pre>$ npm install natty-db rsvp --save</pre></div>
 
-<h4>
-<a id="版本说明" class="anchor" href="#%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E" aria-hidden="true"><span class="octicon octicon-link"></span></a>版本说明</h4>
+<h3>
+<a id="版本说明" class="anchor" href="#%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E" aria-hidden="true"><span class="octicon octicon-link"></span></a>版本说明</h3>
 
 <p>NattyDB同时包含H5和PC两个版本，请根据项目具体需求来选用。两个版本分别对应的文件路径为：</p>
 
@@ -45,8 +45,8 @@
 <li>PC版本：node_modules/dist/natty-db.pc.min.js (文件名中加上了<code>.pc</code>)</li>
 </ul>
 
-<h4>
-<a id="引入方式一直接使用script标签" class="anchor" href="#%E5%BC%95%E5%85%A5%E6%96%B9%E5%BC%8F%E4%B8%80%E7%9B%B4%E6%8E%A5%E4%BD%BF%E7%94%A8script%E6%A0%87%E7%AD%BE" aria-hidden="true"><span class="octicon octicon-link"></span></a>引入方式(一)：直接使用<code>script</code>标签</h4>
+<h3>
+<a id="使用script标签引入" class="anchor" href="#%E4%BD%BF%E7%94%A8script%E6%A0%87%E7%AD%BE%E5%BC%95%E5%85%A5" aria-hidden="true"><span class="octicon octicon-link"></span></a>使用<code>script</code>标签引入</h3>
 
 <p>RSVP + H5版NattyDB</p>
 
@@ -58,15 +58,15 @@
 <div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>./node_modules/rsvp/dist/rsvp.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
 &lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>./node_modules/natty-db/dist/natty-db.pc.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
 
-<h4>
-<a id="引入方式二模块化的开发方式" class="anchor" href="#%E5%BC%95%E5%85%A5%E6%96%B9%E5%BC%8F%E4%BA%8C%E6%A8%A1%E5%9D%97%E5%8C%96%E7%9A%84%E5%BC%80%E5%8F%91%E6%96%B9%E5%BC%8F" aria-hidden="true"><span class="octicon octicon-link"></span></a>引入方式(二)：模块化的开发方式</h4>
+<h3>
+<a id="以模块化的方式引入" class="anchor" href="#%E4%BB%A5%E6%A8%A1%E5%9D%97%E5%8C%96%E7%9A%84%E6%96%B9%E5%BC%8F%E5%BC%95%E5%85%A5" aria-hidden="true"><span class="octicon octicon-link"></span></a>以模块化的方式引入</h3>
 
 <blockquote>
 <p>此处的文档，是假设了项目中使用Webpack作为模块管理工具。</p>
 </blockquote>
 
-<h5>
-<a id="配置rsvp依赖" class="anchor" href="#%E9%85%8D%E7%BD%AErsvp%E4%BE%9D%E8%B5%96" aria-hidden="true"><span class="octicon octicon-link"></span></a>配置<code>RSVP</code>依赖</h5>
+<h4>
+<a id="配置rsvp依赖" class="anchor" href="#%E9%85%8D%E7%BD%AErsvp%E4%BE%9D%E8%B5%96" aria-hidden="true"><span class="octicon octicon-link"></span></a>配置<code>RSVP</code>依赖</h4>
 
 <p>如果以模块方式(非<code>script</code>标签方式)加载RSVP依赖，需要在Webpack配置中使用<a href="http://webpack.github.io/docs/list-of-plugins.html#provideplugin">ProvidePlugin</a>插件将全局RSVP变量引用转换为<code>require('rsvp')</code>模块引用。</p>
 
@@ -76,15 +76,15 @@
     })
 ]</pre></div>
 
-<h5>
-<a id="引入h5版nattydb" class="anchor" href="#%E5%BC%95%E5%85%A5h5%E7%89%88nattydb" aria-hidden="true"><span class="octicon octicon-link"></span></a>引入H5版NattyDB</h5>
+<h4>
+<a id="引入h5版nattydb" class="anchor" href="#%E5%BC%95%E5%85%A5h5%E7%89%88nattydb" aria-hidden="true"><span class="octicon octicon-link"></span></a>引入H5版NattyDB</h4>
 
 <p>在NattyDB模块的<code>package.json</code>中配置的默认版本就是H5版本，文件路径为：<code>dist/natty-db.min.js</code>。</p>
 
 <div class="highlight highlight-source-js"><pre>$ <span class="pl-k">let</span> NattyDB <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>natty-db<span class="pl-pds">'</span></span>);</pre></div>
 
-<h5>
-<a id="引入pc版nattydb" class="anchor" href="#%E5%BC%95%E5%85%A5pc%E7%89%88nattydb" aria-hidden="true"><span class="octicon octicon-link"></span></a>引入PC版NattyDB</h5>
+<h4>
+<a id="引入pc版nattydb" class="anchor" href="#%E5%BC%95%E5%85%A5pc%E7%89%88nattydb" aria-hidden="true"><span class="octicon octicon-link"></span></a>引入PC版NattyDB</h4>
 
 <p>如果项目需要同时兼容移动端和PC端(目前NattyDB支持到<code>IE8+</code>)，需要在Webpack中配置<a href="http://webpack.github.io/docs/configuration.html#resolve-alias">resolve.alias</a>，将NattyDB指向PC版，引用方式保持和H5版本一样。</p>
 
@@ -97,21 +97,57 @@
 }</pre></div>
 
 <h2>
-<a id="setting-levels" class="anchor" href="#setting-levels" aria-hidden="true"><span class="octicon octicon-link"></span></a>Setting Levels</h2>
+<a id="约定" class="anchor" href="#%E7%BA%A6%E5%AE%9A" aria-hidden="true"><span class="octicon octicon-link"></span></a>约定</h2>
+
+<h4>
+<a id="数据结构" class="anchor" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84" aria-hidden="true"><span class="octicon octicon-link"></span></a>数据结构</h4>
+
+<p>NattyDB内部接受的数据结构约定如下：</p>
+
+<div class="highlight highlight-source-js"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>success<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c1">true</span>,
+    <span class="pl-s"><span class="pl-pds">"</span>content<span class="pl-pds">"</span></span><span class="pl-k">:</span> {},
+    <span class="pl-s"><span class="pl-pds">"</span>error<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+        <span class="pl-s"><span class="pl-pds">"</span>code<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>100<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>message<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>error string<span class="pl-pds">"</span></span>
+    }
+}</pre></div>
+
+<p>说明：</p>
+
+<ul>
+<li>[强制] 以<code>success</code>键值表示返回的数据是否有错误，以布尔值表示。
+
+<ul>
+<li>[强制] 当值为<code>true</code>时，返回的数据中必须包含<code>content</code>内容。</li>
+<li>[强制] 当值为<code>false</code>时，返回的数据中必须包含<code>error</code>内容。</li>
+</ul>
+</li>
+<li>[强制] 以<code>content</code>键值表示数据正确时的数据内容。格式<strong>必须</strong>是一个对象。</li>
+<li>[强制] 以<code>error</code>键值表示数据有错误时的错误信息，格式<strong>必须</strong>是一个对象。
+
+<ul>
+<li>[建议] 错误信息中建议使用<code>code</code>，<code>message</code>等非缩写单词。</li>
+</ul>
+</li>
+</ul>
+
+<h2>
+<a id="配置层级" class="anchor" href="#%E9%85%8D%E7%BD%AE%E5%B1%82%E7%BA%A7" aria-hidden="true"><span class="octicon octicon-link"></span></a>配置层级</h2>
 
 <p>NattyDB中一共有三个层级的配置，由上至下分别是全局配置(Global Setting)，上下文配置(Context Setting)和接口配置(API Setting)，上游配置作为下游配置的默认值，同时又被下游配置所覆盖。</p>
 
-<h5>
-<a id="全局配置" class="anchor" href="#%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>全局配置</h5>
+<h4>
+<a id="全局配置" class="anchor" href="#%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>全局配置</h4>
 
-<h5>
-<a id="上下文配置" class="anchor" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E9%85%8D%E7%BD%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>上下文配置</h5>
+<h4>
+<a id="上下文配置" class="anchor" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E9%85%8D%E7%BD%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>上下文配置</h4>
 
-<h5>
-<a id="接口配置" class="anchor" href="#%E6%8E%A5%E5%8F%A3%E9%85%8D%E7%BD%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>接口配置</h5>
+<h4>
+<a id="接口配置" class="anchor" href="#%E6%8E%A5%E5%8F%A3%E9%85%8D%E7%BD%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>接口配置</h4>
 
 <h2>
-<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+<a id="使用" class="anchor" href="#%E4%BD%BF%E7%94%A8" aria-hidden="true"><span class="octicon octicon-link"></span></a>使用</h2>
 
 <h4>
 <a id="第一步定义数据接口" class="anchor" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%8F%A3" aria-hidden="true"><span class="octicon octicon-link"></span></a>第一步：定义数据接口</h4>
@@ -188,7 +224,7 @@
 </pre></div>
 
 <h2>
-<a id="develop" class="anchor" href="#develop" aria-hidden="true"><span class="octicon octicon-link"></span></a>Develop</h2>
+<a id="开发develop" class="anchor" href="#%E5%BC%80%E5%8F%91develop" aria-hidden="true"><span class="octicon octicon-link"></span></a>开发(Develop)</h2>
 
 <p>启动数据端服务器，用于测试返回的数据。</p>
 
@@ -199,7 +235,7 @@
 <div class="highlight highlight-source-shell"><pre>$ npm start</pre></div>
 
 <h2>
-<a id="important-references" class="anchor" href="#important-references" aria-hidden="true"><span class="octicon octicon-link"></span></a>Important References</h2>
+<a id="参考文档important-references" class="anchor" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3important-references" aria-hidden="true"><span class="octicon octicon-link"></span></a>参考文档(Important References)</h2>
 
 <ul>
 <li>
@@ -207,6 +243,88 @@
 <li><a href="http://enable-cors.org/client.html">Browser support for CORS</a></li>
 <li><a href="https://msdn.microsoft.com/en-us/library/cc288060(VS.85).aspx">XDomainRequest on MSDN</a></li>
 </ul>
+
+<h2>
+<a id="常见问答" class="anchor" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E7%AD%94" aria-hidden="true"><span class="octicon octicon-link"></span></a>常见问答</h2>
+
+<h4>
+<a id="q我的项目需要对接两个不同的后端系统但两个系统返回的数据结构完全不同该如何使用nattydb" class="anchor" href="#q%E6%88%91%E7%9A%84%E9%A1%B9%E7%9B%AE%E9%9C%80%E8%A6%81%E5%AF%B9%E6%8E%A5%E4%B8%A4%E4%B8%AA%E4%B8%8D%E5%90%8C%E7%9A%84%E5%90%8E%E7%AB%AF%E7%B3%BB%E7%BB%9F%E4%BD%86%E4%B8%A4%E4%B8%AA%E7%B3%BB%E7%BB%9F%E8%BF%94%E5%9B%9E%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%AE%8C%E5%85%A8%E4%B8%8D%E5%90%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8nattydb" aria-hidden="true"><span class="octicon octicon-link"></span></a>Q：我的项目需要对接两个不同的后端系统，但两个系统返回的数据结构完全不同，该如何使用NattyDB？</h4>
+
+<p>A：假设两个系统分别用<code>A</code>和<code>B</code>表示，返回是数据格式分别如下(仅使用数据正确的情况举例，数据有错的情况同理)：</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// A系统的数据结构</span>
+{
+    <span class="pl-s"><span class="pl-pds">"</span>success<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c1">true</span>,
+    <span class="pl-s"><span class="pl-pds">"</span>data<span class="pl-pds">"</span></span><span class="pl-k">:</span> {...},
+    ...
+}
+
+<span class="pl-c">// B系统的数据结构</span>
+{
+    <span class="pl-s"><span class="pl-pds">"</span>hasError<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c1">false</span>,
+    <span class="pl-s"><span class="pl-pds">"</span>content<span class="pl-pds">"</span></span><span class="pl-k">:</span> {...},
+    ...
+}</pre></div>
+
+<p>针对上面的两种数据结构，在NattyDB中可以有两种方案可以选择：</p>
+
+<p>一：如果项目中对<code>A</code>和<code>B</code>两个系统的依赖有主次之分，比如以<code>A</code>系统为主，则可以把针对<code>A</code>系统的数据结构适配作为全局配置。然后用一个新的数据上下文(Context)配置<code>B</code>系统的数据结构。如：</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> NattyDB <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>natty-db<span class="pl-pds">'</span></span>);
+
+<span class="pl-c">// 把A系统的配置作为全局配置</span>
+NattyDB.setGlobal({
+    <span class="pl-en">fit</span><span class="pl-k">:</span> <span class="pl-k">function</span> (<span class="pl-smi">response</span>) {
+        <span class="pl-k">return</span> {
+            success<span class="pl-k">:</span> response.success,
+            content<span class="pl-k">:</span> response.<span class="pl-c1">data</span>, <span class="pl-c">// 适配点</span>
+            ...
+        };
+    }
+});
+
+<span class="pl-c">// 在新的DB上下文中配置适用于B系统的fit函数</span>
+<span class="pl-k">let</span> systemBContext <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">NattyDB.Context</span>({
+    <span class="pl-en">fit</span><span class="pl-k">:</span> <span class="pl-k">function</span> () {
+        <span class="pl-k">return</span> {
+            success<span class="pl-k">:</span> <span class="pl-k">!</span>response.hasError, <span class="pl-c">// 适配点</span>
+            content<span class="pl-k">:</span> response.<span class="pl-c1">content</span>,
+            ...
+        };
+    }
+});
+<span class="pl-c">// 使用B系统的上下文创建DB</span>
+systemBContext.create(<span class="pl-s"><span class="pl-pds">'</span>Boo<span class="pl-pds">'</span></span>, {...});
+
+<span class="pl-c">// 只要其他的DB上下文没有配置fit函数，则该DB上下文的数据适配方式就会使用全局(即A系统)的</span>
+<span class="pl-k">let</span> otherContext <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">NattyDB.Context</span>();
+otherContext.create(<span class="pl-s"><span class="pl-pds">'</span>Foo<span class="pl-pds">'</span></span>, {...});
+</pre></div>
+
+<p>二：如果<code>A</code>和<code>B</code>两个系统分不出主次，那建议直接为两个系统分别创建各自的DB上下文，代码如下：</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// 适用于A系统的DB上下文</span>
+<span class="pl-k">let</span> systemAContext <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">NattyDB.Context</span>({
+    <span class="pl-en">fit</span><span class="pl-k">:</span> <span class="pl-k">function</span> () {
+        <span class="pl-k">return</span> {
+            success<span class="pl-k">:</span> response.success, <span class="pl-c">// 适配点</span>
+            content<span class="pl-k">:</span> response.<span class="pl-c1">data</span>,
+            ...
+        };
+    }
+});
+
+<span class="pl-c">// 适用于B系统的DB上下文</span>
+<span class="pl-k">let</span> systemBContext <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">NattyDB.Context</span>({
+    <span class="pl-en">fit</span><span class="pl-k">:</span> <span class="pl-k">function</span> () {
+        <span class="pl-k">return</span> {
+            success<span class="pl-k">:</span> <span class="pl-k">!</span>response.hasError, <span class="pl-c">// 适配点</span>
+            content<span class="pl-k">:</span> response.<span class="pl-c1">content</span>,
+            ...
+        };
+    }
+});
+</pre></div>
 
 <h2>
 <a id="credits" class="anchor" href="#credits" aria-hidden="true"><span class="octicon octicon-link"></span></a>Credits</h2>
