@@ -5,6 +5,7 @@
     <title>NattyDB.js by Jias</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
@@ -19,9 +20,95 @@
 
     <section class="main-content">
       <h1>
-<a id="natty-db" class="anchor" href="#natty-db" aria-hidden="true"><span class="octicon octicon-link"></span></a>natty-db</h1>
+<a id="nattydbjs" class="anchor" href="#nattydbjs" aria-hidden="true"><span class="octicon octicon-link"></span></a>NattyDB.js</h1>
 
-<p>An awesome natty little data fetching tool for mobile project that no longer needs to use zepto.</p>
+<p>A natty little data fetching tool for react project that no longer needs to use jQuery/Zepto's Ajax. </p>
+
+<h2>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h2>
+
+<p>先将NattyDB和<a href="https://github.com/tildeio/rsvp.js">RSVP</a>安装到项目本地</p>
+
+<blockquote>
+<p>RSVP小而美地实现了<code>Promise</code>的概念。</p>
+</blockquote>
+
+<div class="highlight highlight-source-shell"><pre>$ npm install natty-db rsvp --save</pre></div>
+
+<h4>
+<a id="版本说明" class="anchor" href="#%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E" aria-hidden="true"><span class="octicon octicon-link"></span></a>版本说明</h4>
+
+<p>NattyDB同时包含H5和PC两个版本，请根据项目具体需求来选用。两个版本分别对应的文件路径为：</p>
+
+<ul>
+<li>H5版本：node_modules/dist/natty-db.min.js</li>
+<li>PC版本：node_modules/dist/natty-db.pc.min.js (文件名中加上了<code>.pc</code>)</li>
+</ul>
+
+<h4>
+<a id="引入方式一直接使用script标签" class="anchor" href="#%E5%BC%95%E5%85%A5%E6%96%B9%E5%BC%8F%E4%B8%80%E7%9B%B4%E6%8E%A5%E4%BD%BF%E7%94%A8script%E6%A0%87%E7%AD%BE" aria-hidden="true"><span class="octicon octicon-link"></span></a>引入方式(一)：直接使用<code>script</code>标签</h4>
+
+<p>RSVP + H5版NattyDB</p>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>./node_modules/rsvp/dist/rsvp.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
+&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>./node_modules/natty-db/dist/natty-db.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+
+<p>RSVP + PC版NattyDB</p>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>./node_modules/rsvp/dist/rsvp.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
+&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>./node_modules/natty-db/dist/natty-db.pc.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+
+<h4>
+<a id="引入方式二模块化的开发方式" class="anchor" href="#%E5%BC%95%E5%85%A5%E6%96%B9%E5%BC%8F%E4%BA%8C%E6%A8%A1%E5%9D%97%E5%8C%96%E7%9A%84%E5%BC%80%E5%8F%91%E6%96%B9%E5%BC%8F" aria-hidden="true"><span class="octicon octicon-link"></span></a>引入方式(二)：模块化的开发方式</h4>
+
+<blockquote>
+<p>此处的文档，是假设了项目中使用Webpack作为模块管理工具。</p>
+</blockquote>
+
+<h5>
+<a id="配置rsvp依赖" class="anchor" href="#%E9%85%8D%E7%BD%AErsvp%E4%BE%9D%E8%B5%96" aria-hidden="true"><span class="octicon octicon-link"></span></a>配置<code>RSVP</code>依赖</h5>
+
+<p>如果以模块方式(非<code>script</code>标签方式)加载RSVP依赖，需要在Webpack配置中使用<a href="http://webpack.github.io/docs/list-of-plugins.html#provideplugin">ProvidePlugin</a>插件将全局RSVP变量引用转换为<code>require('rsvp')</code>模块引用。</p>
+
+<div class="highlight highlight-source-js"><pre>plugins<span class="pl-k">:</span> [
+    <span class="pl-k">new</span> <span class="pl-en">webpack.ProvidePlugin</span>({
+       RSVP<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>rsvp<span class="pl-pds">'</span></span>
+    })
+]</pre></div>
+
+<h5>
+<a id="引入h5版nattydb" class="anchor" href="#%E5%BC%95%E5%85%A5h5%E7%89%88nattydb" aria-hidden="true"><span class="octicon octicon-link"></span></a>引入H5版NattyDB</h5>
+
+<p>在NattyDB模块的<code>package.json</code>中配置的默认版本就是H5版本，文件路径为：<code>dist/natty-db.min.js</code>。</p>
+
+<div class="highlight highlight-source-js"><pre>$ <span class="pl-k">let</span> NattyDB <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>natty-db<span class="pl-pds">'</span></span>);</pre></div>
+
+<h5>
+<a id="引入pc版nattydb" class="anchor" href="#%E5%BC%95%E5%85%A5pc%E7%89%88nattydb" aria-hidden="true"><span class="octicon octicon-link"></span></a>引入PC版NattyDB</h5>
+
+<p>如果项目需要同时兼容移动端和PC端(目前NattyDB支持到<code>IE8+</code>)，需要在Webpack中配置<a href="http://webpack.github.io/docs/configuration.html#resolve-alias">resolve.alias</a>，将NattyDB指向PC版，引用方式保持和H5版本一样。</p>
+
+<p>Webpack中的配置：</p>
+
+<div class="highlight highlight-source-js"><pre>resolve<span class="pl-k">:</span> {
+    alias<span class="pl-k">:</span> {
+        <span class="pl-s"><span class="pl-pds">'</span>natty-db<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>natty-db/dist/natty-db.pc.min.js<span class="pl-pds">'</span></span>
+    }
+}</pre></div>
+
+<h2>
+<a id="setting-levels" class="anchor" href="#setting-levels" aria-hidden="true"><span class="octicon octicon-link"></span></a>Setting Levels</h2>
+
+<p>NattyDB中一共有三个层级的配置，由上至下分别是全局配置(Global Setting)，上下文配置(Context Setting)和接口配置(API Setting)，上游配置作为下游配置的默认值，同时又被下游配置所覆盖。</p>
+
+<h5>
+<a id="全局配置" class="anchor" href="#%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>全局配置</h5>
+
+<h5>
+<a id="上下文配置" class="anchor" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E9%85%8D%E7%BD%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>上下文配置</h5>
+
+<h5>
+<a id="接口配置" class="anchor" href="#%E6%8E%A5%E5%8F%A3%E9%85%8D%E7%BD%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>接口配置</h5>
 
 <h2>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
@@ -101,16 +188,18 @@
 </pre></div>
 
 <h2>
-<a id="dev" class="anchor" href="#dev" aria-hidden="true"><span class="octicon octicon-link"></span></a>dev</h2>
+<a id="develop" class="anchor" href="#develop" aria-hidden="true"><span class="octicon octicon-link"></span></a>Develop</h2>
+
+<p>启动数据端服务器，用于测试返回的数据。</p>
+
+<div class="highlight highlight-source-shell"><pre>$ npm run server</pre></div>
+
+<p>启动实时编译的开发环境</p>
 
 <div class="highlight highlight-source-shell"><pre>$ npm start</pre></div>
 
-<p>and</p>
-
-<div class="highlight highlight-source-shell"><pre>$ node server/server.js</pre></div>
-
 <h2>
-<a id="important-refs" class="anchor" href="#important-refs" aria-hidden="true"><span class="octicon octicon-link"></span></a>Important Refs</h2>
+<a id="important-references" class="anchor" href="#important-references" aria-hidden="true"><span class="octicon octicon-link"></span></a>Important References</h2>
 
 <ul>
 <li>
