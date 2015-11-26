@@ -97,7 +97,112 @@
 }</pre></div>
 
 <h2>
-<a id="约定" class="anchor" href="#%E7%BA%A6%E5%AE%9A" aria-hidden="true"><span class="octicon octicon-link"></span></a>约定</h2>
+<a id="名字解释" class="anchor" href="#%E5%90%8D%E5%AD%97%E8%A7%A3%E9%87%8A" aria-hidden="true"><span class="octicon octicon-link"></span></a>名字解释</h2>
+
+<h4>
+<a id="db模块" class="anchor" href="#db%E6%A8%A1%E5%9D%97" aria-hidden="true"><span class="octicon octicon-link"></span></a>DB模块</h4>
+
+<p>doing...</p>
+
+<h4>
+<a id="db上下文" class="anchor" href="#db%E4%B8%8A%E4%B8%8B%E6%96%87" aria-hidden="true"><span class="octicon octicon-link"></span></a>DB上下文</h4>
+
+<p>doing...</p>
+
+<h4>
+<a id="db" class="anchor" href="#db" aria-hidden="true"><span class="octicon octicon-link"></span></a>DB</h4>
+
+<p>doing...</p>
+
+<h4>
+<a id="api" class="anchor" href="#api" aria-hidden="true"><span class="octicon octicon-link"></span></a>API</h4>
+
+<p>doing...</p>
+
+<h2>
+<a id="使用流程总览" class="anchor" href="#%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B%E6%80%BB%E8%A7%88" aria-hidden="true"><span class="octicon octicon-link"></span></a>使用流程总览</h2>
+
+<p>这一节先总览一下使用NattyDB的完整流程，代码中和代码后的注释说明是重点。</p>
+
+<p>第一步，创建DB模块(如：<code>DB.js</code>)，内容大致如下，其中<code>...</code>的部分表示详细配置，这里先不用关注，下文会展开讲。</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// 引入`NattyDB`</span>
+<span class="pl-k">const</span> <span class="pl-c1">NattyDB</span> <span class="pl-k">=</span> <span class="pl-en">request</span>(<span class="pl-s"><span class="pl-pds">'</span>natty-db<span class="pl-pds">'</span></span>);
+
+<span class="pl-c">// 创建一个`DB上下文`，用于多个`DB`共享配置。</span>
+<span class="pl-k">let</span> DBContext <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">NattyDB.Context</span>({...});
+
+<span class="pl-c">// 使用`DB上下文`创建一个`DB`，同时指定该`DB`所具有的`API`。</span>
+<span class="pl-smi">DBContext</span>.<span class="pl-en">create</span>(<span class="pl-s"><span class="pl-pds">'</span>User<span class="pl-pds">'</span></span>, {
+    getPhone<span class="pl-k">:</span> {...},
+    getNickName<span class="pl-k">:</span> {...}
+});
+
+<span class="pl-c">// 创建更多`DB`</span>
+<span class="pl-smi">DBContext</span>.<span class="pl-en">create</span>(<span class="pl-s"><span class="pl-pds">'</span>Order<span class="pl-pds">'</span></span>, {
+    create<span class="pl-k">:</span> {...},
+    close<span class="pl-k">:</span> {...}
+});
+
+<span class="pl-c">// 创建更多`DB上下文`</span>
+<span class="pl-k">let</span> DBContext2 <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">NattyDB.Context</span>({...});
+
+<span class="pl-c">// 省略的代码</span>
+
+<span class="pl-c">// 输出`DB上下文`</span>
+<span class="pl-smi">module</span>.<span class="pl-smi">exports</span> <span class="pl-k">=</span> {DBContext, DBContext2};</pre></div>
+
+<p>特别注意，一个DB模块的输出值，永远是一个或多个DB上下文对象，这是NattyDB的一个使用约定。</p>
+
+<p>第二步，在业务场景中使用DB模块</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// 引入上面创建的`DB`模块</span>
+<span class="pl-k">const</span> {<span class="pl-c1">DB</span>, <span class="pl-c1">DB2</span>} <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>path/to/DB<span class="pl-pds">'</span></span>);
+
+<span class="pl-c">// 调用一个DB的具体的API</span>
+<span class="pl-smi">DB</span>.<span class="pl-c1">U</span>ser.<span class="pl-en">getPhone</span>({
+    <span class="pl-c">// 动态参数</span>
+}).<span class="pl-en">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">data</span>) {
+    <span class="pl-c">// 成功回调</span>
+}, <span class="pl-k">function</span> (<span class="pl-smi">error</span>) {
+    <span class="pl-c">// 失败回调</span>
+});
+
+<span class="pl-c">// 调用一个DB的具体的API</span>
+<span class="pl-smi">DB</span>.<span class="pl-c1">O</span>rder.<span class="pl-en">create</span>({
+    <span class="pl-c">// 动态参数</span>
+}).<span class="pl-en">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">data</span>) {
+    <span class="pl-c">// 成功回调</span>
+}, <span class="pl-k">function</span> (<span class="pl-smi">error</span>) {
+    <span class="pl-c">// 失败回调</span>
+});
+
+<span class="pl-c">// 省略的DB2的代码</span></pre></div>
+
+<p>特别注意，在上面的代码中，接收DB模块的输出值时，用的变量是<code>DB</code>和<code>DB2</code>，而不是<code>DBContext</code>和<code>DBContext2</code>，因为对于业务模块来说，根本不需要关注DB模块的内部实现层级，DB上下文的概念只存在于DB模块内部，一旦输出到业务模块中，都是等待调用的数据集合的含义。</p>
+
+<h2>
+<a id="配置层级" class="anchor" href="#%E9%85%8D%E7%BD%AE%E5%B1%82%E7%BA%A7" aria-hidden="true"><span class="octicon octicon-link"></span></a>配置层级</h2>
+
+<p>NattyDB中一共有三个层级的配置，由上至下分别是全局配置(Global Setting)，上下文配置(Context Setting)和接口配置(API Setting)，上游配置作为下游配置的默认值，同时又被下游配置所覆盖。</p>
+
+<h4>
+<a id="全局配置" class="anchor" href="#%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>全局配置</h4>
+
+<p>doing...</p>
+
+<h4>
+<a id="上下文配置" class="anchor" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E9%85%8D%E7%BD%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>上下文配置</h4>
+
+<p>doing...</p>
+
+<h4>
+<a id="接口配置" class="anchor" href="#%E6%8E%A5%E5%8F%A3%E9%85%8D%E7%BD%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>接口配置</h4>
+
+<p>doing...</p>
+
+<h2>
+<a id="编码约定" class="anchor" href="#%E7%BC%96%E7%A0%81%E7%BA%A6%E5%AE%9A" aria-hidden="true"><span class="octicon octicon-link"></span></a>编码约定</h2>
 
 <h4>
 <a id="数据结构约定" class="anchor" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%BA%A6%E5%AE%9A" aria-hidden="true"><span class="octicon octicon-link"></span></a>数据结构约定</h4>
@@ -110,7 +215,7 @@
     <span class="pl-s"><span class="pl-pds">"</span>error<span class="pl-pds">"</span></span><span class="pl-k">:</span> {}
 }</pre></div>
 
-<p>说明：下面所有的约定都是强制的。</p>
+<p>说明：</p>
 
 <ul>
 <li>以<code>success</code>键值表示返回的数据是否有错误，以布尔值表示。
@@ -190,96 +295,10 @@
 
 <p>从上面的代码可以看出，如果严格根据语义化的约定来命名DB和API，那么一次数据请求的代码中是不会出现<code>ajax</code>，<code>jsonp</code>，<code>fetch</code>等具体的底层技术关键字的，在业务场景中，尽可能少的关注数据接口的底层技术实现。这样，假设底层技术升级了，对应地修改定义部分的代码即可，使用场景的语义并没有被破坏。</p>
 
-<h2>
-<a id="配置层级" class="anchor" href="#%E9%85%8D%E7%BD%AE%E5%B1%82%E7%BA%A7" aria-hidden="true"><span class="octicon octicon-link"></span></a>配置层级</h2>
-
-<p>NattyDB中一共有三个层级的配置，由上至下分别是全局配置(Global Setting)，上下文配置(Context Setting)和接口配置(API Setting)，上游配置作为下游配置的默认值，同时又被下游配置所覆盖。</p>
-
 <h4>
-<a id="全局配置" class="anchor" href="#%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>全局配置</h4>
+<a id="db模块设计约定" class="anchor" href="#db%E6%A8%A1%E5%9D%97%E8%AE%BE%E8%AE%A1%E7%BA%A6%E5%AE%9A" aria-hidden="true"><span class="octicon octicon-link"></span></a>DB模块设计约定</h4>
 
-<h4>
-<a id="上下文配置" class="anchor" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E9%85%8D%E7%BD%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>上下文配置</h4>
-
-<h4>
-<a id="接口配置" class="anchor" href="#%E6%8E%A5%E5%8F%A3%E9%85%8D%E7%BD%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>接口配置</h4>
-
-<h2>
-<a id="使用" class="anchor" href="#%E4%BD%BF%E7%94%A8" aria-hidden="true"><span class="octicon octicon-link"></span></a>使用</h2>
-
-<h4>
-<a id="第一步定义数据接口" class="anchor" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%8F%A3" aria-hidden="true"><span class="octicon octicon-link"></span></a>第一步：定义数据接口</h4>
-
-<p>创建项目或模块的<code>db</code>文件。如<code>db.js</code></p>
-
-<div class="highlight highlight-source-js"><pre><span class="pl-c">// 引入`natty-db`模块</span>
-<span class="pl-k">const</span> <span class="pl-c1">NattyDB</span> <span class="pl-k">=</span> <span class="pl-en">request</span>(<span class="pl-s"><span class="pl-pds">'</span>natty-db<span class="pl-pds">'</span></span>);
-
-<span class="pl-c">// 创建一个`DB上下文(DB-Context)`，用于多个`DB`共享默认配置。</span>
-<span class="pl-k">let</span> <span class="pl-c1">DBC</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">NattyDB.Context</span>({
-     urlPrefix<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>your-url-prefix<span class="pl-pds">'</span></span>,
-     mock<span class="pl-k">:</span> <span class="pl-c1">false</span>,
-     data<span class="pl-k">:</span> {
-         token<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>your-token<span class="pl-pds">'</span></span>
-     },
-     timeout<span class="pl-k">:</span> <span class="pl-c1">5000</span>,
-     <span class="pl-c">// 数据格式预处理</span>
-     <span class="pl-en">fix</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">resp</span>) {
-         <span class="pl-k">return</span> {
-             success<span class="pl-k">:</span> <span class="pl-k">!</span><span class="pl-smi">resp</span>.<span class="pl-smi">hasError</span>,
-             content<span class="pl-k">:</span> <span class="pl-smi">resp</span>.<span class="pl-c1">content</span>,
-             error<span class="pl-k">:</span> <span class="pl-smi">resp</span>.<span class="pl-smi">error</span>
-         }
-     } 
-});
-
-<span class="pl-c">// 在一个DB上下文中创建一个`DB`，同时指定该`DB`所具有的方法。</span>
-<span class="pl-smi">DBC</span>.<span class="pl-en">create</span>(<span class="pl-s"><span class="pl-pds">'</span>User<span class="pl-pds">'</span></span>, {
-    getPhone<span class="pl-k">:</span> {
-        url<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>xxx<span class="pl-pds">'</span></span>,
-        method<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>GET<span class="pl-pds">'</span></span>, <span class="pl-c">// GET|POST</span>
-        data<span class="pl-k">:</span> {}, <span class="pl-c">// 静态参数</span>
-        header<span class="pl-k">:</span> {}, <span class="pl-c">// 非jsonp时才生效</span>
-        timeout<span class="pl-k">:</span> <span class="pl-c1">5000</span>, <span class="pl-c">// 如果超时了，会触发error</span>
-        jsonp<span class="pl-k">:</span> <span class="pl-c1">false</span>, <span class="pl-c">// true</span>
-        jsonp<span class="pl-k">:</span> [<span class="pl-c1">true</span>, <span class="pl-s"><span class="pl-pds">'</span>cb<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>j{id}<span class="pl-pds">'</span></span>], <span class="pl-c">// 自定义的jsonp        fit: fn,</span>
-        process<span class="pl-k">:</span> fn, 
-        once<span class="pl-k">:</span> <span class="pl-c1">false</span>,
-        retry<span class="pl-k">:</span> <span class="pl-c1">0</span>,
-        ignoreSelfConcurrent<span class="pl-k">:</span> <span class="pl-c1">true</span>
-    },
-    ...
-});
-
-<span class="pl-c">// 创建更多`DB`</span>
-<span class="pl-smi">DBC</span>.<span class="pl-en">create</span>(<span class="pl-s"><span class="pl-pds">'</span>Order<span class="pl-pds">'</span></span>, {...});
-
-<span class="pl-c">// 返回DB上下文，供业务逻辑调用</span>
-<span class="pl-smi">module</span>.<span class="pl-smi">exports</span> <span class="pl-k">=</span> <span class="pl-c1">DBC</span>;</pre></div>
-
-<h4>
-<a id="第二步使用数据接口" class="anchor" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%E4%BD%BF%E7%94%A8%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%8F%A3" aria-hidden="true"><span class="octicon octicon-link"></span></a>第二步：使用数据接口</h4>
-
-<div class="highlight highlight-source-js"><pre><span class="pl-c">// 引入`db`文件</span>
-<span class="pl-k">const</span> <span class="pl-c1">DB</span> <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>path/to/db<span class="pl-pds">'</span></span>);
-
-<span class="pl-smi">DB</span>.<span class="pl-c1">U</span>ser.<span class="pl-en">getPhone</span>({
-    <span class="pl-c">// 动态参数</span>
-}).<span class="pl-en">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">data</span>) {
-    <span class="pl-c">// 成功回调，`data`是`process`处理后的数据</span>
-}, <span class="pl-k">function</span> (<span class="pl-smi">error</span>) {
-    <span class="pl-c">// 失败回调</span>
-    <span class="pl-k">if</span> (<span class="pl-smi">error</span>.<span class="pl-c1">status</span> <span class="pl-k">==</span> <span class="pl-c1">404</span>) {} <span class="pl-c">// ajax方法才有error.status</span>
-    <span class="pl-k">if</span> (<span class="pl-smi">error</span>.<span class="pl-c1">status</span> <span class="pl-k">==</span> <span class="pl-c1">500</span>) {} <span class="pl-c">// ajax方法才有error.status</span>
-    <span class="pl-k">if</span> (<span class="pl-smi">error</span>.<span class="pl-c1">status</span> <span class="pl-k">==</span> <span class="pl-c1">0</span>)      <span class="pl-c">// ajax方法才有error.status 0表示不确定的错误 可能是跨域时使用了非法Header</span>
-    <span class="pl-k">if</span> (<span class="pl-smi">error</span>.<span class="pl-smi">timeout</span>) {
-        <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-smi">error</span>.<span class="pl-smi">message</span>)
-    }
-
-    <span class="pl-c">// 服务器端返回的约定错误，以具体项目而定</span>
-    <span class="pl-k">if</span> (<span class="pl-smi">error</span>.<span class="pl-c1">code</span> <span class="pl-k">==</span> <span class="pl-c1">10001</span>) {}
-});
-</pre></div>
+<p>doing...</p>
 
 <h2>
 <a id="开发develop" class="anchor" href="#%E5%BC%80%E5%8F%91develop" aria-hidden="true"><span class="octicon octicon-link"></span></a>开发(Develop)</h2>
@@ -293,22 +312,12 @@
 <div class="highlight highlight-source-shell"><pre>$ npm start</pre></div>
 
 <h2>
-<a id="参考文档important-references" class="anchor" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3important-references" aria-hidden="true"><span class="octicon octicon-link"></span></a>参考文档(Important References)</h2>
-
-<ul>
-<li>
-<a href="http://www.html5rocks.com/en/tutorials/cors/">Using CORS</a> on html5rocks, very good!</li>
-<li><a href="http://enable-cors.org/client.html">Browser support for CORS</a></li>
-<li><a href="https://msdn.microsoft.com/en-us/library/cc288060(VS.85).aspx">XDomainRequest on MSDN</a></li>
-</ul>
-
-<h2>
 <a id="常见问答" class="anchor" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E7%AD%94" aria-hidden="true"><span class="octicon octicon-link"></span></a>常见问答</h2>
 
-<h5>
-<a id="问我的项目需要对接两个不同的后端系统但两个系统返回的数据结构完全不同该如何使用nattydb" class="anchor" href="#%E9%97%AE%E6%88%91%E7%9A%84%E9%A1%B9%E7%9B%AE%E9%9C%80%E8%A6%81%E5%AF%B9%E6%8E%A5%E4%B8%A4%E4%B8%AA%E4%B8%8D%E5%90%8C%E7%9A%84%E5%90%8E%E7%AB%AF%E7%B3%BB%E7%BB%9F%E4%BD%86%E4%B8%A4%E4%B8%AA%E7%B3%BB%E7%BB%9F%E8%BF%94%E5%9B%9E%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%AE%8C%E5%85%A8%E4%B8%8D%E5%90%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8nattydb" aria-hidden="true"><span class="octicon octicon-link"></span></a>问：我的项目需要对接两个不同的后端系统，但两个系统返回的数据结构完全不同，该如何使用NattyDB？</h5>
+<h4>
+<a id="q我的项目需要对接两个不同的后端系统但两个系统返回的数据结构完全不同该如何使用nattydb" class="anchor" href="#q%E6%88%91%E7%9A%84%E9%A1%B9%E7%9B%AE%E9%9C%80%E8%A6%81%E5%AF%B9%E6%8E%A5%E4%B8%A4%E4%B8%AA%E4%B8%8D%E5%90%8C%E7%9A%84%E5%90%8E%E7%AB%AF%E7%B3%BB%E7%BB%9F%E4%BD%86%E4%B8%A4%E4%B8%AA%E7%B3%BB%E7%BB%9F%E8%BF%94%E5%9B%9E%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%AE%8C%E5%85%A8%E4%B8%8D%E5%90%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8nattydb" aria-hidden="true"><span class="octicon octicon-link"></span></a>Q：我的项目需要对接两个不同的后端系统，但两个系统返回的数据结构完全不同，该如何使用NattyDB？</h4>
 
-<p>答：假设两个系统分别用<code>A</code>和<code>B</code>表示，返回是数据格式分别如下(仅使用数据正确的情况举例，数据有错的情况同理)：</p>
+<p>假设两个系统分别用<code>A</code>和<code>B</code>表示，返回是数据格式分别如下(仅使用数据正确的情况举例，数据有错的情况同理)：</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-c">// A系统的数据结构</span>
 {
@@ -390,10 +399,10 @@
 
 <span class="pl-smi">module</span>.<span class="pl-smi">exports</span> <span class="pl-k">=</span> {systemAContext, systemBContext};</pre></div>
 
-<h5>
-<a id="问当前项目是大型项目一个db上下文中包含的db数量有很多可以拆分成多个模块吗拆分后又如何共享全局配置的" class="anchor" href="#%E9%97%AE%E5%BD%93%E5%89%8D%E9%A1%B9%E7%9B%AE%E6%98%AF%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E4%B8%80%E4%B8%AAdb%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%AD%E5%8C%85%E5%90%AB%E7%9A%84db%E6%95%B0%E9%87%8F%E6%9C%89%E5%BE%88%E5%A4%9A%E5%8F%AF%E4%BB%A5%E6%8B%86%E5%88%86%E6%88%90%E5%A4%9A%E4%B8%AA%E6%A8%A1%E5%9D%97%E5%90%97%E6%8B%86%E5%88%86%E5%90%8E%E5%8F%88%E5%A6%82%E4%BD%95%E5%85%B1%E4%BA%AB%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE%E7%9A%84" aria-hidden="true"><span class="octicon octicon-link"></span></a>问：当前项目是大型项目，一个DB上下文中包含的DB数量有很多，可以拆分成多个模块吗，拆分后又如何共享全局配置的？</h5>
+<h4>
+<a id="q当前项目是大型项目一个db上下文中包含的db数量有很多可以拆分成多个模块吗拆分后又如何共享全局配置的" class="anchor" href="#q%E5%BD%93%E5%89%8D%E9%A1%B9%E7%9B%AE%E6%98%AF%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E4%B8%80%E4%B8%AAdb%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%AD%E5%8C%85%E5%90%AB%E7%9A%84db%E6%95%B0%E9%87%8F%E6%9C%89%E5%BE%88%E5%A4%9A%E5%8F%AF%E4%BB%A5%E6%8B%86%E5%88%86%E6%88%90%E5%A4%9A%E4%B8%AA%E6%A8%A1%E5%9D%97%E5%90%97%E6%8B%86%E5%88%86%E5%90%8E%E5%8F%88%E5%A6%82%E4%BD%95%E5%85%B1%E4%BA%AB%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE%E7%9A%84" aria-hidden="true"><span class="octicon octicon-link"></span></a>Q：当前项目是大型项目，一个DB上下文中包含的DB数量有很多，可以拆分成多个模块吗，拆分后又如何共享全局配置的？</h4>
 
-<p>答：在设计NattyDB的时候就已经考虑了大型项目，一个数据模块的粒度，即可以是单个DB上下文，也可以是多个DB上下文，甚至可以是单个DB(如果这个DB太多接口)。至于拆分成多个模块以后如何共享全局配置，这个就是模块化编程的常(经)见(典)问题了。下面的代码仅供参考，不属于NattyDB本身的文档。</p>
+<p>在设计NattyDB的时候就已经考虑了大型项目，一个数据模块的粒度，即可以是单个DB上下文，也可以是多个DB上下文，甚至可以是单个DB(如果这个DB太多接口)。至于拆分成多个模块以后如何共享全局配置，这个就是模块化编程的常(经)见(典)问题了。下面的代码仅供参考，不属于NattyDB本身的文档。</p>
 
 <p>方式一：将NattyDB模块设置为全局变(对)量(象)共享。(如果不想引入全局变量，请直接看方式二)</p>
 
@@ -420,7 +429,7 @@
 <span class="pl-k">let</span> HooDB <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>./HooDB<span class="pl-pds">'</span></span>).<span class="pl-en">init</span>(FooDBContext);
 <span class="pl-smi">module</span>.<span class="pl-smi">exports</span> <span class="pl-k">=</span> {FooDBContext}</pre></div>
 
-<p><code>FooDBContext.js</code>中的代码，返回一个DB上下文</p>
+<p><code>FooDBContext.js</code>中的代码</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-c1">module</span>.<span class="pl-en">exports</span> <span class="pl-k">=</span> <span class="pl-k">function</span> <span class="pl-en">init</span>(<span class="pl-smi">NattyDB</span>) {
     <span class="pl-k">let</span> FooDBContext <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">NattyDB.Context</span>({...});
@@ -428,12 +437,27 @@
     <span class="pl-k">return</span> FooDBContext;
 };</pre></div>
 
-<p><code>HooDB.js</code>中的代码，返回一个DB</p>
+<p><code>HooDB.js</code>中的代码</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-c1">module</span>.<span class="pl-en">exports</span> <span class="pl-k">=</span> <span class="pl-k">function</span> <span class="pl-en">init</span>(<span class="pl-smi">DBContext</span>) {
     <span class="pl-smi">DBContext</span>.<span class="pl-en">create</span>(<span class="pl-s"><span class="pl-pds">'</span>Foo<span class="pl-pds">'</span></span>, {...});
     <span class="pl-k">return</span> DBContext;
 };</pre></div>
+
+<h2>
+<a id="important-references" class="anchor" href="#important-references" aria-hidden="true"><span class="octicon octicon-link"></span></a>Important References</h2>
+
+<ul>
+<li>
+<a href="http://www.html5rocks.com/en/tutorials/cors/">Using CORS</a> on html5rocks, very good!</li>
+<li><a href="http://enable-cors.org/client.html">Browser support for CORS</a></li>
+<li><a href="https://msdn.microsoft.com/en-us/library/cc288060(VS.85).aspx">XDomainRequest on MSDN</a></li>
+</ul>
+
+<h2>
+<a id="issues" class="anchor" href="#issues" aria-hidden="true"><span class="octicon octicon-link"></span></a>Issues</h2>
+
+<p><a href="https://github.com/Jias/natty-db/issues">https://github.com/Jias/natty-db/issues</a></p>
 
 <h2>
 <a id="credits" class="anchor" href="#credits" aria-hidden="true"><span class="octicon octicon-link"></span></a>Credits</h2>
