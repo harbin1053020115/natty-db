@@ -107,30 +107,88 @@
 <div class="highlight highlight-source-js"><pre>{
     <span class="pl-s"><span class="pl-pds">"</span>success<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c1">true</span>,
     <span class="pl-s"><span class="pl-pds">"</span>content<span class="pl-pds">"</span></span><span class="pl-k">:</span> {},
-    <span class="pl-s"><span class="pl-pds">"</span>error<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
-        <span class="pl-s"><span class="pl-pds">"</span>code<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>100<span class="pl-pds">"</span></span>,
-        <span class="pl-s"><span class="pl-pds">"</span>message<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>error string<span class="pl-pds">"</span></span>
-    }
+    <span class="pl-s"><span class="pl-pds">"</span>error<span class="pl-pds">"</span></span><span class="pl-k">:</span> {}
 }</pre></div>
 
-<p>说明：</p>
+<p>说明：下面所有的约定都是强制的。</p>
 
 <ul>
-<li>[强制] 以<code>success</code>键值表示返回的数据是否有错误，以布尔值表示。
+<li>以<code>success</code>键值表示返回的数据是否有错误，以布尔值表示。
 
 <ul>
-<li>[强制] 当值为<code>true</code>时，返回的数据中必须包含<code>content</code>内容。</li>
-<li>[强制] 当值为<code>false</code>时，返回的数据中必须包含<code>error</code>内容。</li>
+<li>当值为<code>true</code>时，返回的数据中必须包含<code>content</code>对象。</li>
+<li>当值为<code>false</code>时，返回的数据中必须包含<code>error</code>对象。</li>
 </ul>
 </li>
-<li>[强制] 以<code>content</code>键值表示数据正确时的数据内容。格式<strong>必须</strong>是一个对象。</li>
-<li>[强制] 以<code>error</code>键值表示数据有错误时的错误信息，格式<strong>必须</strong>是一个对象。
+<li>以<code>content</code>键值表示数据正确时的数据内容。格式<strong>必须</strong>是一个对象。</li>
+<li>以<code>error</code>键值表示数据有错误时的错误信息，格式<strong>必须</strong>是一个对象。</li>
+</ul>
+
+<blockquote>
+<p>在NattyDB内部，严格按照上面约定的结构处理数据。项目中可以通过适配函数<code>fit</code>将数据结构方便地转换成约定的格式。<code>fit</code>函数的使用详见下文。</p>
+</blockquote>
+
+<h4>
+<a id="语义化" class="anchor" href="#%E8%AF%AD%E4%B9%89%E5%8C%96" aria-hidden="true"><span class="octicon octicon-link"></span></a>语义化</h4>
+
+<p>NattyDB中约定的语义化，是指一个数据接口在业务场景下被调用时，应该更贴近自然语言，让人一眼即懂。语义化的具体约定表现针对DB和API的命名约定。</p>
+
+<p>假设有一组数据接口，它们有共同的宿主或行为目标，那这里的宿主或目标就可以被设计成一个DB，而这些接口就是这个DB下的一套API。</p>
+
+<blockquote>
+<p>DB和API的关系，可以用一句话概括："一个DB是由若干个API所构成的对象"。</p>
+</blockquote>
+
+<p>命名约定</p>
 
 <ul>
-<li>[建议] 错误信息中建议使用<code>code</code>，<code>message</code>等非缩写单词。</li>
+<li>DB的命名必须使用名词词性。</li>
+<li>API的命名必须使用动词词性或动宾短语。</li>
 </ul>
-</li>
-</ul>
+
+<p>命名目标，即调用场景是怎样的。</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// 指定的DB.主语.谓语({参数})</span>
+<span class="pl-smi">DB</span>.<span class="pl-c1">O</span>rder.<span class="pl-en">create</span>({...}).<span class="pl-en">then</span>(...);
+<span class="pl-c">// 指定的DB.主语.谓语宾语({参数})</span>
+<span class="pl-smi">DB</span>.<span class="pl-c1">U</span>ser.<span class="pl-en">getPhone</span>({...}).<span class="pl-en">then</span>(...);</pre></div>
+
+<p>简单举例</p>
+
+<p>假设项目需要新增两个接口，"获取用户手机号" 和 "获取用户花名"。很明显，这两个接口所请求的内容有共同的宿主—"用户"，DB的命名已有选择。而"获取手机号" 和 "获取花名"就是这个DB的两个具体的接口，即API。</p>
+
+<p>定义场景：假设文件名是<code>db.js</code></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> NattyDB <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>natty-db<span class="pl-pds">'</span></span>);
+<span class="pl-c">// 上下文的概念下文会详细讲，这里只知道所有DB都有上下文即可。</span>
+<span class="pl-k">let</span> DBContext <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">NattyDB.Context</span>({...});
+<span class="pl-c">// 定义DB</span>
+<span class="pl-smi">DBContext</span>.<span class="pl-en">create</span>(<span class="pl-s"><span class="pl-pds">'</span>User<span class="pl-pds">'</span></span>, {
+  getPhone<span class="pl-k">:</span> {...},
+  getNickName<span class="pl-k">:</span> {...}
+});
+<span class="pl-smi">module</span>.<span class="pl-smi">exports</span> <span class="pl-k">=</span> DBContext;</pre></div>
+
+<p>使用场景：</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// 引用上面定义的模块</span>
+<span class="pl-k">let</span> <span class="pl-c1">DB</span> <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>path/to/db<span class="pl-pds">'</span></span>);
+
+<span class="pl-c">// 请求用户手机号</span>
+<span class="pl-smi">DB</span>.<span class="pl-c1">U</span>ser.<span class="pl-en">getPhone</span>({...}).<span class="pl-en">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">data</span>) {
+  <span class="pl-c">// 成功</span>
+}, <span class="pl-k">function</span> (<span class="pl-smi">error</span>) {
+  <span class="pl-c">// 失败</span>
+});
+
+<span class="pl-c">// 请求用户花名</span>
+<span class="pl-smi">DB</span>.<span class="pl-c1">U</span>ser.<span class="pl-en">getNickName</span>({...}).<span class="pl-en">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">data</span>) {
+  <span class="pl-c">// 成功</span>
+}, <span class="pl-k">function</span> (<span class="pl-smi">error</span>) {
+  <span class="pl-c">// 失败</span>
+});</pre></div>
+
+<p>从上面的代码可以看出，如果严格根据语义化的约定来命名DB和API，那么一次数据请求的代码中是不会出现<code>ajax</code>，<code>jsonp</code>，<code>fetch</code>等具体的底层技术关键字的。</p>
 
 <h2>
 <a id="配置层级" class="anchor" href="#%E9%85%8D%E7%BD%AE%E5%B1%82%E7%BA%A7" aria-hidden="true"><span class="octicon octicon-link"></span></a>配置层级</h2>
@@ -155,7 +213,7 @@
 <p>创建项目或模块的<code>db</code>文件。如<code>db.js</code></p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-c">// 引入`natty-db`模块</span>
-<span class="pl-k">const</span> <span class="pl-c1">NattyDB</span> <span class="pl-k">=</span> request(<span class="pl-s"><span class="pl-pds">'</span>natty-db<span class="pl-pds">'</span></span>);
+<span class="pl-k">const</span> <span class="pl-c1">NattyDB</span> <span class="pl-k">=</span> <span class="pl-en">request</span>(<span class="pl-s"><span class="pl-pds">'</span>natty-db<span class="pl-pds">'</span></span>);
 
 <span class="pl-c">// 创建一个`DB上下文(DB-Context)`，用于多个`DB`共享默认配置。</span>
 <span class="pl-k">let</span> <span class="pl-c1">DBC</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">NattyDB.Context</span>({
@@ -168,15 +226,15 @@
      <span class="pl-c">// 数据格式预处理</span>
      <span class="pl-en">fix</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">resp</span>) {
          <span class="pl-k">return</span> {
-             success<span class="pl-k">:</span> <span class="pl-k">!</span>resp.hasError,
-             content<span class="pl-k">:</span> resp.<span class="pl-c1">content</span>,
-             error<span class="pl-k">:</span> resp.error
+             success<span class="pl-k">:</span> <span class="pl-k">!</span><span class="pl-smi">resp</span>.<span class="pl-smi">hasError</span>,
+             content<span class="pl-k">:</span> <span class="pl-smi">resp</span>.<span class="pl-c1">content</span>,
+             error<span class="pl-k">:</span> <span class="pl-smi">resp</span>.<span class="pl-smi">error</span>
          }
      } 
 });
 
 <span class="pl-c">// 在一个DB上下文中创建一个`DB`，同时指定该`DB`所具有的方法。</span>
-<span class="pl-c1">DBC</span>.create(<span class="pl-s"><span class="pl-pds">'</span>User<span class="pl-pds">'</span></span>, {
+<span class="pl-smi">DBC</span>.<span class="pl-en">create</span>(<span class="pl-s"><span class="pl-pds">'</span>User<span class="pl-pds">'</span></span>, {
     getPhone<span class="pl-k">:</span> {
         url<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>xxx<span class="pl-pds">'</span></span>,
         method<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>GET<span class="pl-pds">'</span></span>, <span class="pl-c">// GET|POST</span>
@@ -194,10 +252,10 @@
 });
 
 <span class="pl-c">// 创建更多`DB`</span>
-<span class="pl-c1">DBC</span>.create(<span class="pl-s"><span class="pl-pds">'</span>Order<span class="pl-pds">'</span></span>, {...});
+<span class="pl-smi">DBC</span>.<span class="pl-en">create</span>(<span class="pl-s"><span class="pl-pds">'</span>Order<span class="pl-pds">'</span></span>, {...});
 
 <span class="pl-c">// 返回DB上下文，供业务逻辑调用</span>
-<span class="pl-c1">module</span>.exports <span class="pl-k">=</span> <span class="pl-c1">DBC</span>;</pre></div>
+<span class="pl-smi">module</span>.<span class="pl-smi">exports</span> <span class="pl-k">=</span> <span class="pl-c1">DBC</span>;</pre></div>
 
 <h4>
 <a id="第二步使用数据接口" class="anchor" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%E4%BD%BF%E7%94%A8%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%8F%A3" aria-hidden="true"><span class="octicon octicon-link"></span></a>第二步：使用数据接口</h4>
@@ -205,21 +263,21 @@
 <div class="highlight highlight-source-js"><pre><span class="pl-c">// 引入`db`文件</span>
 <span class="pl-k">const</span> <span class="pl-c1">DB</span> <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>path/to/db<span class="pl-pds">'</span></span>);
 
-<span class="pl-c1">DB</span>.User.getPhone({
+<span class="pl-smi">DB</span>.<span class="pl-c1">U</span>ser.<span class="pl-en">getPhone</span>({
     <span class="pl-c">// 动态参数</span>
-}).then(<span class="pl-k">function</span> (<span class="pl-smi">data</span>) {
+}).<span class="pl-en">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">data</span>) {
     <span class="pl-c">// 成功回调，`data`是`process`处理后的数据</span>
 }, <span class="pl-k">function</span> (<span class="pl-smi">error</span>) {
     <span class="pl-c">// 失败回调</span>
-    <span class="pl-k">if</span> (error.<span class="pl-c1">status</span> <span class="pl-k">==</span> <span class="pl-c1">404</span>) {} <span class="pl-c">// ajax方法才有error.status</span>
-    <span class="pl-k">if</span> (error.<span class="pl-c1">status</span> <span class="pl-k">==</span> <span class="pl-c1">500</span>) {} <span class="pl-c">// ajax方法才有error.status</span>
-    <span class="pl-k">if</span> (error.<span class="pl-c1">status</span> <span class="pl-k">==</span> <span class="pl-c1">0</span>)      <span class="pl-c">// ajax方法才有error.status 0表示不确定的错误 可能是跨域时使用了非法Header</span>
-    <span class="pl-k">if</span> (error.timeout) {
-        <span class="pl-en">console</span>.<span class="pl-c1">log</span>(error.message)
+    <span class="pl-k">if</span> (<span class="pl-smi">error</span>.<span class="pl-c1">status</span> <span class="pl-k">==</span> <span class="pl-c1">404</span>) {} <span class="pl-c">// ajax方法才有error.status</span>
+    <span class="pl-k">if</span> (<span class="pl-smi">error</span>.<span class="pl-c1">status</span> <span class="pl-k">==</span> <span class="pl-c1">500</span>) {} <span class="pl-c">// ajax方法才有error.status</span>
+    <span class="pl-k">if</span> (<span class="pl-smi">error</span>.<span class="pl-c1">status</span> <span class="pl-k">==</span> <span class="pl-c1">0</span>)      <span class="pl-c">// ajax方法才有error.status 0表示不确定的错误 可能是跨域时使用了非法Header</span>
+    <span class="pl-k">if</span> (<span class="pl-smi">error</span>.<span class="pl-smi">timeout</span>) {
+        <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-smi">error</span>.<span class="pl-smi">message</span>)
     }
 
     <span class="pl-c">// 服务器端返回的约定错误，以具体项目而定</span>
-    <span class="pl-k">if</span> (error.<span class="pl-c1">code</span> <span class="pl-k">==</span> <span class="pl-c1">10001</span>) {}
+    <span class="pl-k">if</span> (<span class="pl-smi">error</span>.<span class="pl-c1">code</span> <span class="pl-k">==</span> <span class="pl-c1">10001</span>) {}
 });
 </pre></div>
 
@@ -273,11 +331,11 @@
 <div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> NattyDB <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>natty-db<span class="pl-pds">'</span></span>);
 
 <span class="pl-c">// 把A系统的配置作为全局配置</span>
-NattyDB.setGlobal({
+<span class="pl-smi">NattyDB</span>.<span class="pl-en">setGlobal</span>({
     <span class="pl-en">fit</span><span class="pl-k">:</span> <span class="pl-k">function</span> (<span class="pl-smi">response</span>) {
         <span class="pl-k">return</span> {
-            success<span class="pl-k">:</span> response.success,
-            content<span class="pl-k">:</span> response.<span class="pl-c1">data</span>, <span class="pl-c">// 适配点</span>
+            success<span class="pl-k">:</span> <span class="pl-smi">response</span>.<span class="pl-smi">success</span>,
+            content<span class="pl-k">:</span> <span class="pl-smi">response</span>.<span class="pl-c1">data</span>, <span class="pl-c">// 适配点</span>
             ...
         };
     }
@@ -287,18 +345,18 @@ NattyDB.setGlobal({
 <span class="pl-k">let</span> systemBContext <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">NattyDB.Context</span>({
     <span class="pl-en">fit</span><span class="pl-k">:</span> <span class="pl-k">function</span> () {
         <span class="pl-k">return</span> {
-            success<span class="pl-k">:</span> <span class="pl-k">!</span>response.hasError, <span class="pl-c">// 适配点</span>
-            content<span class="pl-k">:</span> response.<span class="pl-c1">content</span>,
+            success<span class="pl-k">:</span> <span class="pl-k">!</span><span class="pl-smi">response</span>.<span class="pl-smi">hasError</span>, <span class="pl-c">// 适配点</span>
+            content<span class="pl-k">:</span> <span class="pl-smi">response</span>.<span class="pl-c1">content</span>,
             ...
         };
     }
 });
 <span class="pl-c">// 使用B系统的上下文创建DB</span>
-systemBContext.create(<span class="pl-s"><span class="pl-pds">'</span>Boo<span class="pl-pds">'</span></span>, {...});
+<span class="pl-smi">systemBContext</span>.<span class="pl-en">create</span>(<span class="pl-s"><span class="pl-pds">'</span>Boo<span class="pl-pds">'</span></span>, {...});
 
 <span class="pl-c">// 只要其他的DB上下文没有配置fit函数，则该DB上下文的数据适配方式就会使用全局(即A系统)的</span>
 <span class="pl-k">let</span> otherContext <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">NattyDB.Context</span>();
-otherContext.create(<span class="pl-s"><span class="pl-pds">'</span>Foo<span class="pl-pds">'</span></span>, {...});
+<span class="pl-smi">otherContext</span>.<span class="pl-en">create</span>(<span class="pl-s"><span class="pl-pds">'</span>Foo<span class="pl-pds">'</span></span>, {...});
 </pre></div>
 
 <p>二：如果<code>A</code>和<code>B</code>两个系统分不出主次，那建议直接为两个系统分别创建各自的DB上下文，代码如下：</p>
@@ -307,8 +365,8 @@ otherContext.create(<span class="pl-s"><span class="pl-pds">'</span>Foo<span cla
 <span class="pl-k">let</span> systemAContext <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">NattyDB.Context</span>({
     <span class="pl-en">fit</span><span class="pl-k">:</span> <span class="pl-k">function</span> () {
         <span class="pl-k">return</span> {
-            success<span class="pl-k">:</span> response.success, <span class="pl-c">// 适配点</span>
-            content<span class="pl-k">:</span> response.<span class="pl-c1">data</span>,
+            success<span class="pl-k">:</span> <span class="pl-smi">response</span>.<span class="pl-smi">success</span>, <span class="pl-c">// 适配点</span>
+            content<span class="pl-k">:</span> <span class="pl-smi">response</span>.<span class="pl-c1">data</span>,
             ...
         };
     }
@@ -318,8 +376,8 @@ otherContext.create(<span class="pl-s"><span class="pl-pds">'</span>Foo<span cla
 <span class="pl-k">let</span> systemBContext <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">NattyDB.Context</span>({
     <span class="pl-en">fit</span><span class="pl-k">:</span> <span class="pl-k">function</span> () {
         <span class="pl-k">return</span> {
-            success<span class="pl-k">:</span> <span class="pl-k">!</span>response.hasError, <span class="pl-c">// 适配点</span>
-            content<span class="pl-k">:</span> response.<span class="pl-c1">content</span>,
+            success<span class="pl-k">:</span> <span class="pl-k">!</span><span class="pl-smi">response</span>.<span class="pl-smi">hasError</span>, <span class="pl-c">// 适配点</span>
+            content<span class="pl-k">:</span> <span class="pl-smi">response</span>.<span class="pl-c1">content</span>,
             ...
         };
     }
