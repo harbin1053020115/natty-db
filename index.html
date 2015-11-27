@@ -12,7 +12,7 @@
   <body>
     <section class="page-header">
       <h1 class="project-name">NattyDB.js</h1>
-      <h2 class="project-tagline">A natty little data fetching tool for react project that no longer needs to use jQuery/Zepto&#39;s Ajax.</h2>
+      <h2 class="project-tagline">A natty semantic data-fetching tool for project that no longer needs to use jQuery/Zepto&#39;s Ajax.</h2>
       <a href="https://github.com/Jias/natty-db" class="btn">View on GitHub</a>
       <a href="https://github.com/Jias/natty-db/zipball/master" class="btn">Download .zip</a>
       <a href="https://github.com/Jias/natty-db/tarball/master" class="btn">Download .tar.gz</a>
@@ -22,7 +22,7 @@
       <h1>
 <a id="nattydbjs" class="anchor" href="#nattydbjs" aria-hidden="true"><span class="octicon octicon-link"></span></a>NattyDB.js</h1>
 
-<p>A natty little data fetching tool for react project that no longer needs to use jQuery/Zepto's Ajax. </p>
+<p>A natty semantic data-fetching tool for project that no longer needs to use jQuery/Zepto's Ajax.</p>
 
 <h2>
 <a id="安装" class="anchor" href="#%E5%AE%89%E8%A3%85" aria-hidden="true"><span class="octicon octicon-link"></span></a>安装</h2>
@@ -97,29 +97,6 @@
 }</pre></div>
 
 <h2>
-<a id="名字解释" class="anchor" href="#%E5%90%8D%E5%AD%97%E8%A7%A3%E9%87%8A" aria-hidden="true"><span class="octicon octicon-link"></span></a>名字解释</h2>
-
-<h4>
-<a id="db模块" class="anchor" href="#db%E6%A8%A1%E5%9D%97" aria-hidden="true"><span class="octicon octicon-link"></span></a>DB模块</h4>
-
-<p>doing...</p>
-
-<h4>
-<a id="db上下文" class="anchor" href="#db%E4%B8%8A%E4%B8%8B%E6%96%87" aria-hidden="true"><span class="octicon octicon-link"></span></a>DB上下文</h4>
-
-<p>doing...</p>
-
-<h4>
-<a id="db" class="anchor" href="#db" aria-hidden="true"><span class="octicon octicon-link"></span></a>DB</h4>
-
-<p>doing...</p>
-
-<h4>
-<a id="api" class="anchor" href="#api" aria-hidden="true"><span class="octicon octicon-link"></span></a>API</h4>
-
-<p>doing...</p>
-
-<h2>
 <a id="使用流程总览" class="anchor" href="#%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B%E6%80%BB%E8%A7%88" aria-hidden="true"><span class="octicon octicon-link"></span></a>使用流程总览</h2>
 
 <p>这一节先总览一下使用NattyDB的完整流程，代码中和代码后的注释说明是重点。</p>
@@ -182,24 +159,210 @@
 <p>特别注意，在上面的代码中，接收DB模块的输出值时，用的变量是<code>DB</code>和<code>DB2</code>，而不是<code>DBContext</code>和<code>DBContext2</code>，因为对于业务模块来说，根本不需要关注DB模块的内部实现层级，DB上下文的概念只存在于DB模块内部，一旦输出到业务模块中，都是等待调用的数据集合的含义。</p>
 
 <h2>
-<a id="配置层级" class="anchor" href="#%E9%85%8D%E7%BD%AE%E5%B1%82%E7%BA%A7" aria-hidden="true"><span class="octicon octicon-link"></span></a>配置层级</h2>
+<a id="配置" class="anchor" href="#%E9%85%8D%E7%BD%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>配置</h2>
+
+<h4>
+<a id="配置层级" class="anchor" href="#%E9%85%8D%E7%BD%AE%E5%B1%82%E7%BA%A7" aria-hidden="true"><span class="octicon octicon-link"></span></a>配置层级</h4>
 
 <p>NattyDB中一共有三个层级的配置，由上至下分别是全局配置(Global Setting)，上下文配置(Context Setting)和接口配置(API Setting)，上游配置作为下游配置的默认值，同时又被下游配置所覆盖。</p>
 
+<h5>
+<a id="全局配置" class="anchor" href="#%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>全局配置</h5>
+
+<p>操作NattyDB最顶配置有两个方法：<code>setGlobal</code> 和 <code>getGlobal</code></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// 设置</span>
+<span class="pl-smi">NattyDB</span>.<span class="pl-en">setGlobal</span>({<span class="pl-c">/*全局配置*/</span>});
+<span class="pl-c">// 获取所有全局配置</span>
+<span class="pl-smi">NattyDB</span>.<span class="pl-en">getGlobal</span>();
+<span class="pl-c">// 获取一项全局配置</span>
+<span class="pl-smi">NattyDB</span>.<span class="pl-en">getGlobal</span>(<span class="pl-s"><span class="pl-pds">'</span>jsonp<span class="pl-pds">'</span></span>);</pre></div>
+
+<h5>
+<a id="上下文配置" class="anchor" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E9%85%8D%E7%BD%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>上下文配置</h5>
+
+<p>上下文配置就是一个DB上下文实例在初始化时的配置，即传入到NattyDB.Context类的参数。</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> DBContext <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">NattyDB.Context</span>({<span class="pl-c">/*上下文配置*/</span>});</pre></div>
+
+<h5>
+<a id="接口配置" class="anchor" href="#%E6%8E%A5%E5%8F%A3%E9%85%8D%E7%BD%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>接口配置</h5>
+
+<p>一个DB上下文实例可以创建多个DB对象，一个DB对象是由多个接口构成的。接口配置就是用于描述单个DB接口的。</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">DBContext</span>.<span class="pl-en">create</span>(<span class="pl-s"><span class="pl-pds">'</span>Order<span class="pl-pds">'</span></span>, {
+    create<span class="pl-k">:</span> {<span class="pl-c">/*接口配置*/</span>},
+    <span class="pl-en">close</span><span class="pl-k">:</span> <span class="pl-k">function</span> () {
+        <span class="pl-k">return</span> {<span class="pl-c">/*接口配置*/</span>};
+    }
+});</pre></div>
+
 <h4>
-<a id="全局配置" class="anchor" href="#%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>全局配置</h4>
+<a id="配置参数" class="anchor" href="#%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0" aria-hidden="true"><span class="octicon octicon-link"></span></a>配置参数</h4>
 
-<p>doing...</p>
+<p>上面提到全局配置，上下文配置和接口配置，都可以传入以下参数。</p>
 
-<h4>
-<a id="上下文配置" class="anchor" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E9%85%8D%E7%BD%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>上下文配置</h4>
+<h5>
+<a id="cache" class="anchor" href="#cache" aria-hidden="true"><span class="octicon octicon-link"></span></a>cache</h5>
 
-<p>doing...</p>
+<ul>
+<li>类型：Boolean</li>
+<li>默认：true</li>
+</ul>
 
-<h4>
-<a id="接口配置" class="anchor" href="#%E6%8E%A5%E5%8F%A3%E9%85%8D%E7%BD%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>接口配置</h4>
+<p>是否允许(浏览器默认的)缓存，值为<code>true</code>时，会在请求的<code>url</code>中加入<code>noCache</code>参数，屏蔽浏览器的缓存机制。</p>
 
-<p>doing...</p>
+<h5>
+<a id="data" class="anchor" href="#data" aria-hidden="true"><span class="octicon octicon-link"></span></a>data</h5>
+
+<ul>
+<li>类型：Object / Function</li>
+<li>默认：{}</li>
+</ul>
+
+<p>请求的默认参数。在全局配置或上下文配置中通常会设置和后端约定的参数，比如<code>token</code>。在接口配置中，data参数用于定义该接口的固定参数。</p>
+
+<h5>
+<a id="fit" class="anchor" href="#fit" aria-hidden="true"><span class="octicon octicon-link"></span></a>fit</h5>
+
+<ul>
+<li>类型：Function</li>
+<li>默认：function (response) {return response}</li>
+</ul>
+
+<p>数据结构预处理函数</p>
+
+<h5>
+<a id="header" class="anchor" href="#header" aria-hidden="true"><span class="octicon octicon-link"></span></a>header</h5>
+
+<ul>
+<li>类型：Object</li>
+<li>默认：{}</li>
+</ul>
+
+<p>自定义ajax请求的header，所以只对ajax请求生效，当ajax请求跨域时，该配置将被忽略。</p>
+
+<h5>
+<a id="ignoreselfconcurrent" class="anchor" href="#ignoreselfconcurrent" aria-hidden="true"><span class="octicon octicon-link"></span></a>ignoreSelfConcurrent</h5>
+
+<ul>
+<li>类型：Boolean</li>
+<li>默认：false</li>
+</ul>
+
+<p>是否忽律接口自身的并发请求，即请求锁。</p>
+
+<h5>
+<a id="jsonp" class="anchor" href="#jsonp" aria-hidden="true"><span class="octicon octicon-link"></span></a>jsonp</h5>
+
+<ul>
+<li>类型：Boolean / Array</li>
+<li>默认：false</li>
+<li>示例：[true, 'cb', 'j{id}']</li>
+</ul>
+
+<p>请求方式是否使用jsonp，当值为true时，默认的url参数形如<code>?callback=jsonp3879494623</code>，如果需要自定义jsonp的url参数，可以通过数组参数配置。</p>
+
+<h5>
+<a id="method" class="anchor" href="#method" aria-hidden="true"><span class="octicon octicon-link"></span></a>method</h5>
+
+<ul>
+<li>类型：String</li>
+<li>默认：'GET'</li>
+<li>可选：'GET、POST'</li>
+</ul>
+
+<p>配置ajax的请求方式。</p>
+
+<h5>
+<a id="mock" class="anchor" href="#mock" aria-hidden="true"><span class="octicon octicon-link"></span></a>mock</h5>
+
+<ul>
+<li>类型：Boolean</li>
+<li>默认：false</li>
+</ul>
+
+<p>是否开启mock模式</p>
+
+<h5>
+<a id="mockurl" class="anchor" href="#mockurl" aria-hidden="true"><span class="octicon octicon-link"></span></a>mockUrl</h5>
+
+<ul>
+<li>类型：String</li>
+<li>默认：''(空字符串)</li>
+</ul>
+
+<p>mock模式开启时的请求地址</p>
+
+<h5>
+<a id="mockurlprefix" class="anchor" href="#mockurlprefix" aria-hidden="true"><span class="octicon octicon-link"></span></a>mockUrlPrefix</h5>
+
+<ul>
+<li>类型：String</li>
+<li>默认：''(空字符串)</li>
+</ul>
+
+<p>mock模式开启时的请求地址前缀，如果mockUrl的值是"绝对路径"或"相对路径"，则不会自动添加该前缀。</p>
+
+<h5>
+<a id="once" class="anchor" href="#once" aria-hidden="true"><span class="octicon octicon-link"></span></a>once</h5>
+
+<ul>
+<li>类型：Boolean</li>
+<li>默认：false</li>
+</ul>
+
+<p>是否对请求的数据进行缓存，开启之后，第二次(及以后)请求该接口时，会直接使用缓存的数据触发回调。</p>
+
+<h5>
+<a id="process" class="anchor" href="#process" aria-hidden="true"><span class="octicon octicon-link"></span></a>process</h5>
+
+<ul>
+<li>类型：Function</li>
+<li>默认：function (data) {return data}</li>
+</ul>
+
+<p>请求成功时的数据处理函数，该函数接收到的参数是下文的"数据结构约定"中<code>content</code>的值。</p>
+
+<h5>
+<a id="retry" class="anchor" href="#retry" aria-hidden="true"><span class="octicon octicon-link"></span></a>retry</h5>
+
+<ul>
+<li>类型：Number</li>
+<li>默认：0</li>
+</ul>
+
+<p>在请求失败(网络错误，超时，success为false等)时是否进行请求重试。</p>
+
+<h5>
+<a id="timeout" class="anchor" href="#timeout" aria-hidden="true"><span class="octicon octicon-link"></span></a>timeout</h5>
+
+<ul>
+<li>类型：Number</li>
+<li>默认：0</li>
+</ul>
+
+<p>超时时间，0表示不启动超时处理。</p>
+
+<h5>
+<a id="url" class="anchor" href="#url" aria-hidden="true"><span class="octicon octicon-link"></span></a>url</h5>
+
+<ul>
+<li>类型：String</li>
+<li>默认：''(空字符串)</li>
+</ul>
+
+<p>请求地址</p>
+
+<h5>
+<a id="urlprefix" class="anchor" href="#urlprefix" aria-hidden="true"><span class="octicon octicon-link"></span></a>urlPrefix</h5>
+
+<ul>
+<li>类型：String</li>
+<li>默认：''(空字符串)</li>
+</ul>
+
+<p>请求地址前缀，如果url的值是"绝对路径"或"相对路径"，则不会自动添加该前缀。</p>
 
 <h2>
 <a id="编码约定" class="anchor" href="#%E7%BC%96%E7%A0%81%E7%BA%A6%E5%AE%9A" aria-hidden="true"><span class="octicon octicon-link"></span></a>编码约定</h2>
@@ -298,7 +461,7 @@
 <h4>
 <a id="db模块设计约定" class="anchor" href="#db%E6%A8%A1%E5%9D%97%E8%AE%BE%E8%AE%A1%E7%BA%A6%E5%AE%9A" aria-hidden="true"><span class="octicon octicon-link"></span></a>DB模块设计约定</h4>
 
-<p>doing...</p>
+<p>其实在上文的"使用流程总览"一节中已经有过说明</p>
 
 <h2>
 <a id="开发develop" class="anchor" href="#%E5%BC%80%E5%8F%91develop" aria-hidden="true"><span class="octicon octicon-link"></span></a>开发(Develop)</h2>
