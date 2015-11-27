@@ -55,7 +55,12 @@
 
 <p>RSVP + PC版NattyDB</p>
 
-<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>./node_modules/rsvp/dist/rsvp.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
+<div class="highlight highlight-text-html-basic"><pre><span class="pl-c">&lt;!--[if lt IE 10]&gt;</span>
+<span class="pl-c">&lt;script type="text/javascript" src="./node_modules/es5-shim/es5-shim.min.js"&gt;&lt;/script&gt;</span>
+<span class="pl-c">&lt;script type="text/javascript" src="./node_modules/es5-shim/es5-sham.min.js"&gt;&lt;/script&gt;</span>
+<span class="pl-c">&lt;script type="text/javascript" src="./test-src/json2.js"&gt;&lt;/script&gt;</span>
+<span class="pl-c">&lt;![endif]--&gt;</span>
+&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>./node_modules/rsvp/dist/rsvp.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
 &lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>./node_modules/natty-db/dist/natty-db.pc.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
 
 <h3>
