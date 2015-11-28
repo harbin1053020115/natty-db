@@ -27,14 +27,6 @@
 <h2>
 <a id="安装" class="anchor" href="#%E5%AE%89%E8%A3%85" aria-hidden="true"><span class="octicon octicon-link"></span></a>安装</h2>
 
-<p>先将NattyDB和<a href="https://github.com/tildeio/rsvp.js">RSVP</a>安装到项目本地</p>
-
-<blockquote>
-<p>RSVP小而美地实现了<code>Promise</code>的概念。</p>
-</blockquote>
-
-<div class="highlight highlight-source-shell"><pre>$ npm install natty-db rsvp --save</pre></div>
-
 <h3>
 <a id="版本说明" class="anchor" href="#%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E" aria-hidden="true"><span class="octicon octicon-link"></span></a>版本说明</h3>
 
@@ -50,30 +42,37 @@
 
 <p>RSVP + H5版NattyDB</p>
 
-<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>./node_modules/rsvp/dist/rsvp.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
-&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>./node_modules/natty-db/dist/natty-db.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>path/to/rsvp.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
+&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>path/to/natty-db.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
 
 <p>RSVP + PC版NattyDB</p>
 
 <div class="highlight highlight-text-html-basic"><pre><span class="pl-c">&lt;!--[if lt IE 10]&gt;</span>
-<span class="pl-c">&lt;script type="text/javascript" src="./node_modules/es5-shim/es5-shim.min.js"&gt;&lt;/script&gt;</span>
-<span class="pl-c">&lt;script type="text/javascript" src="./node_modules/es5-shim/es5-sham.min.js"&gt;&lt;/script&gt;</span>
-<span class="pl-c">&lt;script type="text/javascript" src="./test-src/json2.js"&gt;&lt;/script&gt;</span>
+<span class="pl-c">&lt;script type="text/javascript" src="path/to/es5-shim.min.js"&gt;&lt;/script&gt;</span>
+<span class="pl-c">&lt;script type="text/javascript" src="path/to/es5-sham.min.js"&gt;&lt;/script&gt;</span>
 <span class="pl-c">&lt;![endif]--&gt;</span>
-&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>./node_modules/rsvp/dist/rsvp.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
-&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>./node_modules/natty-db/dist/natty-db.pc.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>path/to/rsvp.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
+&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>path/to/natty-db.pc.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
 
 <h3>
 <a id="以模块化的方式引入" class="anchor" href="#%E4%BB%A5%E6%A8%A1%E5%9D%97%E5%8C%96%E7%9A%84%E6%96%B9%E5%BC%8F%E5%BC%95%E5%85%A5" aria-hidden="true"><span class="octicon octicon-link"></span></a>以模块化的方式引入</h3>
 
+<p>先将NattyDB和<a href="https://github.com/tildeio/rsvp.js">RSVP</a>安装到项目本地</p>
+
 <blockquote>
-<p>此处的文档，是假设了项目中使用Webpack作为模块管理工具。</p>
+<p>RSVP小而美地实现了<code>Promise</code>的概念，是NattyDB的唯一依赖。</p>
 </blockquote>
+
+<div class="highlight highlight-source-shell"><pre>$ npm install natty-db rsvp --save</pre></div>
 
 <h4>
 <a id="配置rsvp依赖" class="anchor" href="#%E9%85%8D%E7%BD%AErsvp%E4%BE%9D%E8%B5%96" aria-hidden="true"><span class="octicon octicon-link"></span></a>配置<code>RSVP</code>依赖</h4>
 
-<p>如果以模块方式(非<code>script</code>标签方式)加载RSVP依赖，需要在Webpack配置中使用<a href="http://webpack.github.io/docs/list-of-plugins.html#provideplugin">ProvidePlugin</a>插件将全局RSVP变量引用转换为<code>require('rsvp')</code>模块引用。</p>
+<blockquote>
+<p>此处假设了项目中使用<code>Webpack</code>作为模块管理工具。</p>
+</blockquote>
+
+<p>如果以模块方式(非<code>script</code>标签方式)加载RSVP依赖，需要在<code>Webpack</code>配置中使用<a href="http://webpack.github.io/docs/list-of-plugins.html#provideplugin">ProvidePlugin</a>插件将全局RSVP变量引用转换为<code>require('rsvp')</code>模块引用。</p>
 
 <div class="highlight highlight-source-js"><pre>plugins<span class="pl-k">:</span> [
     <span class="pl-k">new</span> <span class="pl-en">webpack.ProvidePlugin</span>({
@@ -91,9 +90,13 @@
 <h4>
 <a id="引入pc版nattydb" class="anchor" href="#%E5%BC%95%E5%85%A5pc%E7%89%88nattydb" aria-hidden="true"><span class="octicon octicon-link"></span></a>引入PC版NattyDB</h4>
 
-<p>如果项目需要同时兼容移动端和PC端(目前NattyDB支持到<code>IE8+</code>)，需要在Webpack中配置<a href="http://webpack.github.io/docs/configuration.html#resolve-alias">resolve.alias</a>，将NattyDB指向PC版，引用方式保持和H5版本一样。</p>
+<blockquote>
+<p>此处假设了项目中使用<code>Webpack</code>作为模块管理工具。</p>
+</blockquote>
 
-<p>Webpack中的配置：</p>
+<p>如果项目需要同时兼容移动端和PC端(目前NattyDB支持到<code>IE8+</code>)，需要在<code>Webpack</code>中配置<a href="http://webpack.github.io/docs/configuration.html#resolve-alias">resolve.alias</a>，将NattyDB指向PC版，引用方式保持和H5版本一样。</p>
+
+<p><code>Webpack</code>中的配置：</p>
 
 <div class="highlight highlight-source-js"><pre>resolve<span class="pl-k">:</span> {
     alias<span class="pl-k">:</span> {
@@ -101,8 +104,22 @@
     }
 }</pre></div>
 
+<h3>
+<a id="对ie89的兼容需要注意" class="anchor" href="#%E5%AF%B9ie89%E7%9A%84%E5%85%BC%E5%AE%B9%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F" aria-hidden="true"><span class="octicon octicon-link"></span></a>对IE8/9的兼容，需要注意！</h3>
+
+<p>如果项目需要兼容<code>IE8/9</code>，需要在html中引入<code>es5-shim</code>和<code>es5-sham</code>扩展。</p>
+
+<div class="highlight highlight-text-html-basic"><pre><span class="pl-c">&lt;!--[if lt IE 10]&gt;</span>
+<span class="pl-c">&lt;script type="text/javascript" src="path/to/es5-shim.min.js"&gt;&lt;/script&gt;</span>
+<span class="pl-c">&lt;script type="text/javascript" src="path/to/es5-sham.min.js"&gt;&lt;/script&gt;</span>
+<span class="pl-c">&lt;![endif]--&gt;</span></pre></div>
+
+<blockquote>
+<p>NattyDB最初是为了一个基于React的项目而开发的，所以使用了和项目一样的开发环境，即<code>ES6 + Webpack + Babel</code>组合，而经过<code>Babel</code>编译后的代码，如果想运行在<code>IE8/9</code>浏览上，就需要引入<code>es5-shim</code>和<code>es5-sham</code>扩展。</p>
+</blockquote>
+
 <h2>
-<a id="使用流程总览" class="anchor" href="#%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B%E6%80%BB%E8%A7%88" aria-hidden="true"><span class="octicon octicon-link"></span></a>使用流程总览</h2>
+<a id="使用总览" class="anchor" href="#%E4%BD%BF%E7%94%A8%E6%80%BB%E8%A7%88" aria-hidden="true"><span class="octicon octicon-link"></span></a>使用总览</h2>
 
 <p>这一节先总览一下使用NattyDB的完整流程，代码中和代码后的注释说明是重点。</p>
 
@@ -255,7 +272,18 @@
 <li>默认：false</li>
 </ul>
 
-<p>是否忽律接口自身的并发请求，即请求锁。</p>
+<p>是否忽略接口自身的并发请求，即是否开启请求锁。</p>
+
+<p>示例：假设有一个创建订单的按钮，点击即发起请求，最理想的情况，这个"创建订单"的请求必定要做客户端的请求锁，来避免相同的信息被意外地创建了多份订单。在NattyDB中，只需要一个参数即可开启请求锁。</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">DBContext</span>.<span class="pl-en">create</span>(<span class="pl-s"><span class="pl-pds">'</span>Order<span class="pl-pds">'</span></span>, {
+    create<span class="pl-k">:</span> {
+        url<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>api/createOrder<span class="pl-pds">'</span></span>,
+        <span class="pl-c">// 开启请求锁 </span>
+        <span class="pl-c">// 该接口在服务端返回响应之前，如果再次被调用，将被忽略。</span>
+        ignoreSelfConcurrent<span class="pl-k">:</span> <span class="pl-c1">true</span>
+    }
+});</pre></div>
 
 <h5>
 <a id="jsonp" class="anchor" href="#jsonp" aria-hidden="true"><span class="octicon octicon-link"></span></a>jsonp</h5>
@@ -274,10 +302,14 @@
 <ul>
 <li>类型：String</li>
 <li>默认：'GET'</li>
-<li>可选：'GET、POST'</li>
+<li>可选：'GET'、'POST'</li>
 </ul>
 
 <p>配置ajax的请求方式。</p>
+
+<blockquote>
+<p>如果浏览器是IE8/9，则NattyDB内部使用的是<code>XDomainRequest</code>对象，以便支持跨域功能，但<code>XDomainRequest</code>对象仅支持<code>GET</code>和<code>POST</code>两个方法。</p>
+</blockquote>
 
 <h5>
 <a id="mock" class="anchor" href="#mock" aria-hidden="true"><span class="octicon octicon-link"></span></a>mock</h5>
@@ -375,6 +407,8 @@
 <h4>
 <a id="数据结构约定" class="anchor" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%BA%A6%E5%AE%9A" aria-hidden="true"><span class="octicon octicon-link"></span></a>数据结构约定</h4>
 
+<p>请记住NattyDB在数据结构上的约定，当一个项目的服务端数据结构不一致的时候，比如需要对接多个系统(跨公司的系统，新老系统并存等)是时候，这里的约定就是将各种数据结构统一后的焦点。</p>
+
 <p>NattyDB内部接受的数据结构约定如下：</p>
 
 <div class="highlight highlight-source-js"><pre>{
@@ -397,9 +431,7 @@
 <li>以<code>error</code>键值表示数据有错误时的错误信息，格式<strong>必须</strong>是一个对象。</li>
 </ul>
 
-<blockquote>
-<p>在NattyDB内部，严格按照上面约定的结构处理数据。项目中可以通过适配函数<code>fit</code>将数据结构方便地转换成约定的格式。<code>fit</code>函数的使用详见下文。</p>
-</blockquote>
+<p>在NattyDB内部，严格按照上面约定的结构接收和处理数据。项目中可以通过适配函数<code>fit</code>将数据结构方便地转换成约定的格式。<code>fit</code>函数的使用详见下文。</p>
 
 <h4>
 <a id="语义化约定" class="anchor" href="#%E8%AF%AD%E4%B9%89%E5%8C%96%E7%BA%A6%E5%AE%9A" aria-hidden="true"><span class="octicon octicon-link"></span></a>语义化约定</h4>
