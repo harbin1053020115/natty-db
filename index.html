@@ -407,7 +407,7 @@
 <h4>
 <a id="数据结构约定" class="anchor" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%BA%A6%E5%AE%9A" aria-hidden="true"><span class="octicon octicon-link"></span></a>数据结构约定</h4>
 
-<p>请记住NattyDB在数据结构上的约定，当一个项目的服务端数据结构不一致的时候，比如需要对接多个系统(跨公司的系统，新老系统并存等)是时候，这里的约定就是将各种数据结构统一后的焦点。</p>
+<p>请记住NattyDB在数据结构上的约定，当一个项目的服务端数据结构不一致的时候，比如需要对接多个系统，这里的约定就是将各种数据结构统一后的焦点。</p>
 
 <p>NattyDB内部接受的数据结构约定如下：</p>
 
@@ -499,6 +499,31 @@
 <a id="db模块设计约定" class="anchor" href="#db%E6%A8%A1%E5%9D%97%E8%AE%BE%E8%AE%A1%E7%BA%A6%E5%AE%9A" aria-hidden="true"><span class="octicon octicon-link"></span></a>DB模块设计约定</h4>
 
 <p>其实在上文的"使用流程总览"一节中已经有过说明</p>
+
+<h2>
+<a id="轮询请求" class="anchor" href="#%E8%BD%AE%E8%AF%A2%E8%AF%B7%E6%B1%82" aria-hidden="true"><span class="octicon octicon-link"></span></a>轮询请求</h2>
+
+<p>创建轮询请求从来就没有这么简单过！</p>
+
+<blockquote>
+<p>注意：在轮询的过程中是不响应错误的。</p>
+</blockquote>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// 开始轮询</span>
+<span class="pl-smi">DB</span>.<span class="pl-c1">D</span>river.<span class="pl-smi">getDistance</span>.<span class="pl-en">startLoop</span>({
+  <span class="pl-c">// 间隔时间</span>
+  duration<span class="pl-k">:</span> <span class="pl-c1">5000</span>,
+  <span class="pl-c">// 成功的对调，参数是约定格式的`content`值</span>
+  <span class="pl-en">process</span><span class="pl-k">:</span> <span class="pl-k">function</span> (<span class="pl-smi">data</span>) {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(data);
+  }
+});
+
+<span class="pl-c">// 结束轮询</span>
+<span class="pl-smi">DB</span>.<span class="pl-c1">D</span>river.<span class="pl-smi">getDistance</span>.<span class="pl-en">stopLoop</span>();
+
+<span class="pl-c">// 轮询状态</span>
+<span class="pl-smi">DB</span>.<span class="pl-c1">D</span>river.<span class="pl-smi">getDistance</span>.<span class="pl-smi">looping</span>; <span class="pl-c">// true or false</span></pre></div>
 
 <h2>
 <a id="开发develop" class="anchor" href="#%E5%BC%80%E5%8F%91develop" aria-hidden="true"><span class="octicon octicon-link"></span></a>开发(Develop)</h2>
