@@ -159,18 +159,18 @@
 <span class="pl-k">const</span> {<span class="pl-c1">DB</span>, <span class="pl-c1">DB2</span>} <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>path/to/DB<span class="pl-pds">'</span></span>);
 
 <span class="pl-c">// 调用一个DB的具体的API</span>
-<span class="pl-smi">DB</span>.<span class="pl-c1">U</span>ser.<span class="pl-en">getPhone</span>({
+<span class="pl-smi">DB</span>.<span class="pl-smi">User</span>.<span class="pl-en">getPhone</span>({
     <span class="pl-c">// 动态参数</span>
-}).<span class="pl-en">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">data</span>) {
+}).<span class="pl-en">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">content</span>) {
     <span class="pl-c">// 成功回调</span>
 }, <span class="pl-k">function</span> (<span class="pl-smi">error</span>) {
     <span class="pl-c">// 失败回调</span>
 });
 
 <span class="pl-c">// 调用一个DB的具体的API</span>
-<span class="pl-smi">DB</span>.<span class="pl-c1">O</span>rder.<span class="pl-en">create</span>({
+<span class="pl-smi">DB</span>.<span class="pl-smi">Order</span>.<span class="pl-en">create</span>({
     <span class="pl-c">// 动态参数</span>
-}).<span class="pl-en">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">data</span>) {
+}).<span class="pl-en">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">content</span>) {
     <span class="pl-c">// 成功回调</span>
 }, <span class="pl-k">function</span> (<span class="pl-smi">error</span>) {
     <span class="pl-c">// 失败回调</span>
@@ -346,7 +346,7 @@
 
 <ul>
 <li>类型：Function</li>
-<li>默认：function (data) {return data}</li>
+<li>默认：function (content) {return content}</li>
 </ul>
 
 <p>请求成功时的数据处理函数，该函数接收到的参数是下文的"数据结构约定"中<code>content</code>的值。</p>
@@ -444,9 +444,9 @@
 <p>命名目标，即调用场景是怎样用的。</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-c">// 指定的DB.主语.谓语({参数})</span>
-<span class="pl-smi">DB</span>.<span class="pl-c1">O</span>rder.<span class="pl-en">create</span>({...}).<span class="pl-en">then</span>(...);
+<span class="pl-smi">DB</span>.<span class="pl-smi">Order</span>.<span class="pl-en">create</span>({...}).<span class="pl-en">then</span>(...);
 <span class="pl-c">// 指定的DB.主语.谓语宾语({参数})</span>
-<span class="pl-smi">DB</span>.<span class="pl-c1">U</span>ser.<span class="pl-en">getPhone</span>({...}).<span class="pl-en">then</span>(...);</pre></div>
+<span class="pl-smi">DB</span>.<span class="pl-smi">User</span>.<span class="pl-en">getPhone</span>({...}).<span class="pl-en">then</span>(...);</pre></div>
 
 <p>简单举例</p>
 
@@ -470,14 +470,14 @@
 <span class="pl-k">let</span> <span class="pl-c1">DB</span> <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>path/to/db<span class="pl-pds">'</span></span>);
 
 <span class="pl-c">// 请求用户手机号</span>
-<span class="pl-smi">DB</span>.<span class="pl-c1">U</span>ser.<span class="pl-en">getPhone</span>({...}).<span class="pl-en">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">data</span>) {
+<span class="pl-smi">DB</span>.<span class="pl-smi">User</span>.<span class="pl-en">getPhone</span>({...}).<span class="pl-en">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">content</span>) {
   <span class="pl-c">// 成功</span>
 }, <span class="pl-k">function</span> (<span class="pl-smi">error</span>) {
   <span class="pl-c">// 失败</span>
 });
 
 <span class="pl-c">// 请求用户花名</span>
-<span class="pl-smi">DB</span>.<span class="pl-c1">U</span>ser.<span class="pl-en">getNickName</span>({...}).<span class="pl-en">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">data</span>) {
+<span class="pl-smi">DB</span>.<span class="pl-smi">User</span>.<span class="pl-en">getNickName</span>({...}).<span class="pl-en">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">content</span>) {
   <span class="pl-c">// 成功</span>
 }, <span class="pl-k">function</span> (<span class="pl-smi">error</span>) {
   <span class="pl-c">// 失败</span>
@@ -495,25 +495,23 @@
 
 <p>创建轮询请求从来就没有这么简单过！</p>
 
-<blockquote>
-<p>注意：在轮询的过程中是不响应错误的。</p>
-</blockquote>
-
 <div class="highlight highlight-source-js"><pre><span class="pl-c">// 开始轮询</span>
-<span class="pl-smi">DB</span>.<span class="pl-c1">D</span>river.<span class="pl-smi">getDistance</span>.<span class="pl-en">startLoop</span>({
+<span class="pl-smi">DB</span>.<span class="pl-smi">Driver</span>.<span class="pl-smi">getDistance</span>.<span class="pl-en">startLoop</span>({
+  <span class="pl-c">// 轮询使用的参数</span>
+  data<span class="pl-k">:</span> {...},
   <span class="pl-c">// 间隔时间</span>
-  duration<span class="pl-k">:</span> <span class="pl-c1">5000</span>,
-  <span class="pl-c">// 成功的对调，参数是约定格式的`content`值</span>
-  <span class="pl-en">process</span><span class="pl-k">:</span> <span class="pl-k">function</span> (<span class="pl-smi">data</span>) {
-    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(data);
-  }
+  duration<span class="pl-k">:</span> <span class="pl-c1">5000</span>
+}, <span class="pl-k">function</span> (<span class="pl-smi">content</span>) {
+  <span class="pl-c">// 成功回调</span>
+}, <span class="pl-k">function</span> (<span class="pl-smi">error</span>) {
+  <span class="pl-c">// 失败回调</span>
 });
 
 <span class="pl-c">// 结束轮询</span>
-<span class="pl-smi">DB</span>.<span class="pl-c1">D</span>river.<span class="pl-smi">getDistance</span>.<span class="pl-en">stopLoop</span>();
+<span class="pl-smi">DB</span>.<span class="pl-smi">Driver</span>.<span class="pl-smi">getDistance</span>.<span class="pl-en">stopLoop</span>();
 
 <span class="pl-c">// 轮询状态</span>
-<span class="pl-smi">DB</span>.<span class="pl-c1">D</span>river.<span class="pl-smi">getDistance</span>.<span class="pl-smi">looping</span>; <span class="pl-c">// true or false</span></pre></div>
+<span class="pl-smi">DB</span>.<span class="pl-smi">Driver</span>.<span class="pl-smi">getDistance</span>.<span class="pl-smi">looping</span>; <span class="pl-c">// true or false</span></pre></div>
 
 <h2>
 <a id="开发develop" class="anchor" href="#%E5%BC%80%E5%8F%91develop" aria-hidden="true"><span class="octicon octicon-link"></span></a>开发(Develop)</h2>
@@ -630,7 +628,7 @@
 <p>方式一：将NattyDB模块设置为全局变(对)量(象)共享。(如果不想引入全局变量，请直接看方式二)</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-c">// 将NattyDB挂载到全局</span>
-<span class="pl-k">let</span> NattyDB <span class="pl-k">=</span> <span class="pl-smi">window</span>.<span class="pl-c1">N</span>attyDB <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>natty-db<span class="pl-pds">'</span></span>);
+<span class="pl-k">let</span> NattyDB <span class="pl-k">=</span> <span class="pl-smi">window</span>.<span class="pl-smi">NattyDB</span> <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>natty-db<span class="pl-pds">'</span></span>);
 
 <span class="pl-c">// 设置全局配置</span>
 <span class="pl-smi">NattyDB</span>.<span class="pl-en">setGlobal</span>({...});</pre></div>
